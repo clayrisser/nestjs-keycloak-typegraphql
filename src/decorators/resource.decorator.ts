@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 22:17:00
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 19:15:29
+ * Last Modified: 17-07-2021 21:25:07
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,8 +24,13 @@
 
 import { createMethodDecorator, NextFn, ResolverData } from 'type-graphql';
 import { GraphqlCtx } from '../types';
+import DecorateAll from './decorateAll.decorator';
 
-export function Resource(resource: string) {
+export default function Resource(resource: string) {
+  return DecorateAll(ResourceMethod(resource));
+}
+
+export function ResourceMethod(resource: string) {
   return createMethodDecorator(
     ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
       if (!context.typegraphqlMeta) context.typegraphqlMeta = {};

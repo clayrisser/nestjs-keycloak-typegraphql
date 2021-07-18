@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 19:41:12
+ * Last Modified: 17-07-2021 21:26:12
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -25,7 +25,7 @@
 import { createMethodDecorator, NextFn, ResolverData } from 'type-graphql';
 import { GraphqlCtx } from '../types';
 
-export function Scopes(...scopes: string[]) {
+export default function Scopes(...scopes: string[]) {
   return createMethodDecorator(
     ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
       if (!context.typegraphqlMeta) context.typegraphqlMeta = {};

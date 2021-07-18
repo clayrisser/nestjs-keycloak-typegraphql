@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 22:27:15
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 19:13:51
+ * Last Modified: 17-07-2021 21:21:11
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,5 +22,10 @@
  * limitations under the License.
  */
 
+import DecorateAll from './decorateAll.decorator';
+import Resource from './resource.decorator';
+import Scopes from './scopes.decorator';
+
+export { DecorateAll, Resource, Scopes };
+
 export * from './resource.decorator';
-export * from './scopes.decorator';
