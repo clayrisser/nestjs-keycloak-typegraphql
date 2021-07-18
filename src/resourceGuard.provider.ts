@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 19:38:58
+ * Last Modified: 18-07-2021 06:32:06
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -73,17 +73,13 @@ async function canActivate(
   );
   const resource = context.typegraphqlMeta?.resource;
   if (!resource) return true;
+  const scopes = context.typegraphqlMeta?.scopes || [];
+  if (!scopes.length) return true;
   const username = (await keycloakService.getUserInfo())?.preferredUsername;
   if (!username) return false;
-  const scopes = context.typegraphqlMeta?.scopes || [];
-  if (!scopes.length) {
-    logger.verbose(`resource '${resource}' granted to '${username}'`);
-    return true;
-  }
   logger.verbose(
     `protecting resource '${resource}' with scopes [ ${scopes.join(', ')} ]`
   );
-  if (!scopes.length) return true;
   const permissions = scopes.map((scope) => `${resource}:${scope}`);
   if (await keycloakService.enforce(permissions)) {
     logger.verbose(`resource '${resource}' granted to '${username}'`);
