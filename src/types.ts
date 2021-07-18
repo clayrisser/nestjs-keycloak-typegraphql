@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 19:16:13
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 17-07-2021 19:35:20
+ * Last Modified: 18-07-2021 03:21:43
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -22,9 +22,11 @@
  * limitations under the License.
  */
 
+import { ApiProperty } from '@nestjs/swagger';
 import { KeycloakContext } from 'keycloak-connect-graphql';
 import { KeycloakService, KeycloakRequest } from 'nestjs-keycloak';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
+import { ObjectType, Field } from 'type-graphql';
 import { Request } from 'express';
 
 export interface HashMap<T = any> {
@@ -52,6 +54,23 @@ export interface KeycloakTypegraphqlAsyncOptions
   useFactory?: (
     ...args: any[]
   ) => Promise<KeycloakTypegraphqlOptions> | KeycloakTypegraphqlOptions;
+}
+
+@ObjectType()
+export class UserInfo {
+  @ApiProperty()
+  @Field((_type) => Boolean)
+  emailVerified!: boolean;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  preferredUsername!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  sub!: string;
+
+  [key: string]: any;
 }
 
 export const KEYCLOAK_TYPEGRAPHQL_OPTIONS = 'KEYCLOAK_TYPEGRAPHQL_OPTIONS';
