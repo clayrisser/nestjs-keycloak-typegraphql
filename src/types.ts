@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 19:16:13
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 18-07-2021 06:07:14
+ * Last Modified: 18-07-2021 06:14:21
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -56,12 +56,14 @@ export interface KeycloakTypegraphqlAsyncOptions
   ) => Promise<KeycloakTypegraphqlOptions> | KeycloakTypegraphqlOptions;
 }
 
+@ObjectType()
 export class TokenContentRealmAccess {
   @ApiProperty()
   @Field((_type) => [String])
   roles!: string[];
 }
 
+@ObjectType()
 export class TokenHeader {
   @ApiProperty()
   @Field((_type) => String)
@@ -76,6 +78,7 @@ export class TokenHeader {
   typ!: string;
 }
 
+@ObjectType()
 export class TokenContent {
   @ApiProperty()
   @Field((_type) => [String])
@@ -134,7 +137,8 @@ export class TokenContent {
   typ!: string;
 }
 
-export class Token {
+@ObjectType()
+export class TokenProperties {
   @ApiProperty()
   @Field((_type) => String)
   clientId!: string;
@@ -158,6 +162,29 @@ export class Token {
   @ApiProperty()
   @Field((_type) => Buffer)
   signature!: Buffer;
+}
+
+@ObjectType()
+export class GrantProperties {
+  @ApiProperty()
+  @Field((_type) => TokenProperties)
+  access_token?: TokenProperties;
+
+  @ApiProperty()
+  @Field((_type) => TokenProperties)
+  refresh_token?: TokenProperties;
+
+  @ApiProperty()
+  @Field((_type) => TokenProperties)
+  id_token?: TokenProperties;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  expires_in?: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  token_type?: string;
 }
 
 @ObjectType()
