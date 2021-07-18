@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 19:41:08
+ * Last Modified: 18-07-2021 10:17:45
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -60,7 +60,7 @@ const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
       const resource = context.typegraphqlMeta?.resource;
       logger.verbose(
         `resource${
-          resource ? `'${resource}' ` : ''
+          resource ? ` '${resource}'` : ''
         } for '${username}' requires roles [ ${roles.join(' | ')} ]`
       );
       if (await keycloakService.isAuthorizedByRoles(roles)) {
