@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 19:16:13
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 18-07-2021 08:26:08
+ * Last Modified: 18-07-2021 08:26:52
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -96,6 +96,10 @@ export class TokenHeader {
 
 @ObjectType()
 export class TokenContent {
+  // @ApiProperty()
+  // @Field((_type) => [String])
+  // 'allowed-origins': string[];
+
   @ApiProperty()
   @Field((_type) => String)
   acr!: string;
