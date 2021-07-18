@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 19:16:13
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 18-07-2021 03:21:43
+ * Last Modified: 18-07-2021 06:07:14
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -54,6 +54,110 @@ export interface KeycloakTypegraphqlAsyncOptions
   useFactory?: (
     ...args: any[]
   ) => Promise<KeycloakTypegraphqlOptions> | KeycloakTypegraphqlOptions;
+}
+
+export class TokenContentRealmAccess {
+  @ApiProperty()
+  @Field((_type) => [String])
+  roles!: string[];
+}
+
+export class TokenHeader {
+  @ApiProperty()
+  @Field((_type) => String)
+  alg!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  kid!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  typ!: string;
+}
+
+export class TokenContent {
+  @ApiProperty()
+  @Field((_type) => [String])
+  'allowed-origins': string[];
+
+  @ApiProperty()
+  @Field((_type) => String)
+  acr!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  azp!: string;
+
+  @ApiProperty()
+  @Field((_type) => Boolean)
+  email_verified!: boolean;
+
+  @ApiProperty()
+  @Field((_type) => Number)
+  exp!: number;
+
+  @ApiProperty()
+  @Field((_type) => Number)
+  iat!: number;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  iss!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  jti!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  preferred_username!: string;
+
+  @ApiProperty()
+  @Field((_type) => TokenContentRealmAccess)
+  realm_access!: TokenContentRealmAccess;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  scope!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  session_state!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  sub!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  typ!: string;
+}
+
+export class Token {
+  @ApiProperty()
+  @Field((_type) => String)
+  clientId!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  signed!: string;
+
+  @ApiProperty()
+  @Field((_type) => String)
+  token!: string;
+
+  @ApiProperty()
+  @Field((_type) => TokenContent)
+  content!: TokenContent;
+
+  @ApiProperty()
+  @Field((_type) => TokenHeader)
+  header!: TokenHeader;
+
+  @ApiProperty()
+  @Field((_type) => Buffer)
+  signature!: Buffer;
 }
 
 @ObjectType()
