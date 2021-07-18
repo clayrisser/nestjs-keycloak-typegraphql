@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 19:16:13
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 18-07-2021 06:14:21
+ * Last Modified: 18-07-2021 08:26:08
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -26,7 +26,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { KeycloakContext } from 'keycloak-connect-graphql';
 import { KeycloakService, KeycloakRequest } from 'nestjs-keycloak';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
-import { ObjectType, Field } from 'type-graphql';
+import { ObjectType, Field, registerEnumType } from 'type-graphql';
 import { Request } from 'express';
 
 export interface HashMap<T = any> {
@@ -56,6 +56,22 @@ export interface KeycloakTypegraphqlAsyncOptions
   ) => Promise<KeycloakTypegraphqlOptions> | KeycloakTypegraphqlOptions;
 }
 
+export enum GqlBufferType {
+  Buffer = 'Buffer'
+}
+registerEnumType(GqlBufferType, { name: 'GqlBufferType' });
+
+@ObjectType()
+export class GqlBuffer {
+  @ApiProperty()
+  @Field((_type) => GqlBufferType)
+  type!: GqlBufferType;
+
+  @ApiProperty()
+  @Field((_type) => [Number])
+  data!: number[];
+}
+
 @ObjectType()
 export class TokenContentRealmAccess {
   @ApiProperty()
@@ -80,10 +96,6 @@ export class TokenHeader {
 
 @ObjectType()
 export class TokenContent {
-  @ApiProperty()
-  @Field((_type) => [String])
-  'allowed-origins': string[];
-
   @ApiProperty()
   @Field((_type) => String)
   acr!: string;
@@ -160,8 +172,8 @@ export class TokenProperties {
   header!: TokenHeader;
 
   @ApiProperty()
-  @Field((_type) => Buffer)
-  signature!: Buffer;
+  @Field((_type) => GqlBuffer)
+  signature!: GqlBuffer;
 }
 
 @ObjectType()
