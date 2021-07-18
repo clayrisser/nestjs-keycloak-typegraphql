@@ -16,13 +16,9 @@ Submit an [issue](https://github.com/clayrisser/nestjs-keycloak-typegraphql/issu
 
 ## License
 
-[Apache-2.0 License](https://github.com/clayrisser/nestjs-keycloak-typegraphql/blob/master/LICENSE)
+[Apache-2.0 License](LICENSE)
 
 [Silicon Hills LLC](https://clayrisser.com) © 2021
-
-## Changelog
-
-Review the [changelog](https://github.com/clayrisser/nestjs-keycloak-typegraphql/blob/master/CHANGELOG.md)
 
 ## Credits
 
