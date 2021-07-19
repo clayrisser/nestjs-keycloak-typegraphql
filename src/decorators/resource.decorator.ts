@@ -1,10 +1,10 @@
 /**
  * File: /src/decorators/resource.decorator.ts
  * Project: nestjs-keycloak
- * File Created: 15-07-2021 22:17:00
+ * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 21:25:07
+ * Last Modified: 19-07-2021 18:46:50
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,20 +22,10 @@
  * limitations under the License.
  */
 
-import { createMethodDecorator, NextFn, ResolverData } from 'type-graphql';
-import { GraphqlCtx } from '../types';
-import DecorateAll from './decorateAll.decorator';
+import { Resource as KeycloakResource } from 'nestjs-keycloak';
+import { applyDecorators } from '@nestjs/common';
+import RegisterHandler from './registerHandler.decorator';
 
 export default function Resource(resource: string) {
-  return DecorateAll(ResourceMethod(resource));
-}
-
-export function ResourceMethod(resource: string) {
-  return createMethodDecorator(
-    ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
-      if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
-      context.typegraphqlMeta.resource = resource;
-      return next();
-    }
-  );
+  return applyDecorators(KeycloakResource(resource), RegisterHandler);
 }

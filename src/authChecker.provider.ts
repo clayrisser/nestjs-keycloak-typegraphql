@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 10:17:45
+ * Last Modified: 19-07-2021 18:55:57
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -23,6 +23,7 @@
  */
 
 import { AuthChecker, ResolverData } from 'type-graphql';
+import { DiscoveryService, Reflector } from '@nestjs/core';
 import { HttpService } from '@nestjs/axios';
 import { Keycloak } from 'keycloak-connect';
 import { Logger, FactoryProvider } from '@nestjs/common';
@@ -39,12 +40,21 @@ export const AUTH_CHECKER = 'AUTH_CHECKER';
 
 const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
   provide: AUTH_CHECKER,
-  inject: [KEYCLOAK_OPTIONS, KEYCLOAK, HttpService],
+  inject: [
+    KEYCLOAK_OPTIONS,
+    KEYCLOAK,
+    HttpService,
+    DiscoveryService,
+    Reflector
+  ],
   useFactory: (
     options: KeycloakOptions,
     keycloak: Keycloak,
-    httpService: HttpService
+    httpService: HttpService,
+    _discoveryService: DiscoveryService,
+    _reflector: Reflector
   ) => {
+    // TODO: use reflector to find decorators
     return async (
       { context }: ResolverData<GraphqlCtx>,
       roles: (string | string[])[] = []

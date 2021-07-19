@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 19:16:13
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 18-07-2021 08:26:52
+ * Last Modified: 19-07-2021 18:25:57
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -28,14 +28,15 @@ import { KeycloakService, KeycloakRequest } from 'nestjs-keycloak';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { ObjectType, Field, registerEnumType } from 'type-graphql';
 import { Request } from 'express';
+import { Type } from '@nestjs/common';
 
 export interface HashMap<T = any> {
   [key: string]: T;
 }
 
 export interface TypeGraphqlMeta {
-  resource?: string;
-  scopes?: string[];
+  getClass?(): Type<any>;
+  getHandler?(): Function;
   [key: string]: any;
 }
 

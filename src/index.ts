@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:24
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 19:38:04
+ * Last Modified: 19-07-2021 17:12:40
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 
+import { DiscoveryModule } from '@nestjs/core';
 import { DynamicModule, Global, Logger, Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import AuthCheckerProvider from './authChecker.provider';
@@ -38,7 +39,7 @@ import {
 export default class KeycloakModule {
   private readonly logger = new Logger(KeycloakModule.name);
 
-  private static imports = [HttpModule];
+  private static imports = [HttpModule, DiscoveryModule];
 
   public static register(options: KeycloakTypegraphqlOptions): DynamicModule {
     return {

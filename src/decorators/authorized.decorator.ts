@@ -1,13 +1,13 @@
 /**
- * File: /src/decorators/scopes.decorator.ts
- * Project: nestjs-keycloak
- * File Created: 14-07-2021 11:43:57
- * Author: Clay Risser <email@clayrisser.com>
+ * File: /src/decorators/authorized.decorator.ts
+ * Project: nestjs-keycloak-typegraphql
+ * File Created: 19-07-2021 18:40:53
+ * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 19-07-2021 18:52:18
+ * Last Modified: 19-07-2021 18:54:55
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Clay Risser (c) Copyright 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,24 @@
  * limitations under the License.
  */
 
-import { Scopes as KeycloakScopes } from 'nestjs-keycloak';
+import { Authorized as TypeGraphqlAuthorized } from 'type-graphql';
+import { MethodAndPropDecorator } from 'type-graphql/dist/decorators/types';
 import { applyDecorators } from '@nestjs/common';
 import RegisterHandler from './registerHandler.decorator';
 import RegisterClass from './registerClass.decorator';
 
-export default function Scopes(...scopes: string[]) {
+export function Authorized(): MethodAndPropDecorator;
+export function Authorized<RoleType = string>(
+  roles: RoleType[]
+): MethodAndPropDecorator;
+export function Authorized<RoleType = string>(
+  ...roles: RoleType[]
+): MethodAndPropDecorator;
+export function Authorized<RoleType = string>(
+  ...roles: RoleType[] | [RoleType[]]
+): MethodDecorator {
   return applyDecorators(
-    KeycloakScopes(...scopes),
+    TypeGraphqlAuthorized(...roles),
     RegisterClass,
     RegisterHandler
   );

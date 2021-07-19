@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 06:32:06
+ * Last Modified: 19-07-2021 18:57:09
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 
+import { DiscoveryService, Reflector } from '@nestjs/core';
 import { HttpService } from '@nestjs/axios';
 import { Keycloak } from 'keycloak-connect';
 import { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
@@ -44,12 +45,21 @@ export const RESOURCE_GUARD = 'RESOURCE_GUARD';
 
 const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
   provide: RESOURCE_GUARD,
-  inject: [KEYCLOAK_OPTIONS, KEYCLOAK, HttpService],
+  inject: [
+    KEYCLOAK_OPTIONS,
+    KEYCLOAK,
+    HttpService,
+    DiscoveryService,
+    Reflector
+  ],
   useFactory: (
     options: KeycloakOptions,
     keycloak: Keycloak,
-    httpService: HttpService
+    httpService: HttpService,
+    _discoveryService: DiscoveryService,
+    _reflector: Reflector
   ) => {
+    // TODO: use reflector to find decorators
     return async ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
       if (!(await canActivate(options, keycloak, httpService, context))) {
         throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
