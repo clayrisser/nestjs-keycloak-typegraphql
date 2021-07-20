@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 19:16:13
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 19-07-2021 18:25:57
+ * Last Modified: 20-07-2021 01:58:21
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -26,7 +26,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { KeycloakContext } from 'keycloak-connect-graphql';
 import { KeycloakService, KeycloakRequest } from 'nestjs-keycloak';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
-import { ObjectType, Field, registerEnumType } from 'type-graphql';
+import {
+  ObjectType,
+  Field,
+  registerEnumType,
+  MiddlewareFn
+} from 'type-graphql';
 import { Request } from 'express';
 import { Type } from '@nestjs/common';
 
@@ -35,6 +40,7 @@ export interface HashMap<T = any> {
 }
 
 export interface TypeGraphqlMeta {
+  deferredMiddlewares?: MiddlewareFn[];
   getClass?(): Type<any>;
   getHandler?(): Function;
   [key: string]: any;

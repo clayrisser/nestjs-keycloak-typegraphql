@@ -1,10 +1,10 @@
 /**
- * File: /src/resourceGuard.provider.ts
+ * File: /src/authGuard.provider.ts
  * Project: nestjs-keycloak
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-07-2021 02:18:59
+ * Last Modified: 20-07-2021 02:18:24
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -34,21 +34,21 @@ import {
   Type
 } from '@nestjs/common';
 import {
+  AUTHORIZED,
   KEYCLOAK,
   KEYCLOAK_OPTIONS,
   KeycloakOptions,
   KeycloakService,
-  RESOURCE,
-  SCOPES
+  RESOURCE
 } from 'nestjs-keycloak';
 import deferMiddleware from './deferMiddleware';
 import { GraphqlCtx } from './types';
 
-const logger = new Logger('ResourceGuard');
-export const RESOURCE_GUARD = 'RESOURCE_GUARD';
+const logger = new Logger('AuthGuard');
+export const AUTH_GUARD = 'AUTH_GUARD';
 
-const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
-  provide: RESOURCE_GUARD,
+const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
+  provide: AUTH_GUARD,
   inject: [KEYCLOAK_OPTIONS, KEYCLOAK, HttpService, Reflector],
   useFactory: (
     options: KeycloakOptions,
@@ -64,19 +64,25 @@ const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
       return reflector.get<string>(RESOURCE, classTarget);
     }
 
-    function getScopes(context: GraphqlCtx) {
+    function getRoles(context: GraphqlCtx): (string | string[])[] | void {
       const { getClass, getHandler } = context.typegraphqlMeta || {};
       let classTarget: Type<any> | null = null;
       let handlerTarget: Function | null = null;
       if (getClass) classTarget = getClass();
       if (getHandler) handlerTarget = getHandler();
-      const handlerScopes = handlerTarget
-        ? reflector.get<string[]>(SCOPES, handlerTarget) || []
+      const handlerRoles = handlerTarget
+        ? reflector.get<(string | string[])[]>(AUTHORIZED, handlerTarget)
         : [];
-      const classScopes = classTarget
-        ? reflector.get<string[]>(SCOPES, classTarget) || []
+      const classRoles = classTarget
+        ? reflector.get<(string | string[])[]>(AUTHORIZED, classTarget)
         : [];
-      return [...new Set([...handlerScopes, ...classScopes])];
+      if (
+        (typeof classRoles === 'undefined' || classRoles === null) &&
+        (typeof handlerRoles === 'undefined' || handlerRoles === null)
+      ) {
+        return undefined;
+      }
+      return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
     }
 
     async function canActivate(context: GraphqlCtx): Promise<boolean> {
@@ -86,21 +92,23 @@ const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
         httpService,
         context
       );
-      const resource = getResource(context);
-      if (!resource) return true;
-      const scopes = getScopes(context) || [];
-      if (!scopes.length) return true;
+      const roles = getRoles(context);
+      if (typeof roles === 'undefined') return true;
       const username = (await keycloakService.getUserInfo())?.preferredUsername;
       if (!username) return false;
+      const resource = getResource(context);
       logger.verbose(
-        `protecting resource '${resource}' with scopes [ ${scopes.join(', ')} ]`
+        `resource${
+          resource ? ` '${resource}'` : ''
+        } for '${username}' requires ${
+          roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
+        }`
       );
-      const permissions = scopes.map((scope) => `${resource}:${scope}`);
-      if (await keycloakService.enforce(permissions)) {
-        logger.verbose(`resource '${resource}' granted to '${username}'`);
+      if (await keycloakService.isAuthorizedByRoles(roles)) {
+        logger.verbose(`authorization for '${username}' granted`);
         return true;
       }
-      logger.verbose(`resource '${resource}' denied to '${username}'`);
+      logger.verbose(`authorization for '${username}' denied`);
       return false;
     }
 
@@ -109,7 +117,7 @@ const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
         context,
         async ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
           if (!(await canActivate(context))) {
-            throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+            throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
           }
           return next();
         }
@@ -119,4 +127,4 @@ const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
   }
 };
 
-export default ResourceGuardProvider;
+export default AuthGuardProvider;

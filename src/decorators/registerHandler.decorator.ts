@@ -4,7 +4,7 @@
  * File Created: 19-07-2021 18:42:26
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 19-07-2021 18:44:48
+ * Last Modified: 20-07-2021 02:11:25
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -25,7 +25,11 @@
 import { createMethodDecorator, ResolverData, NextFn } from 'type-graphql';
 import { GraphqlCtx } from '../types';
 
-export default function RegisterHandler(handlerTarget: any) {
+export default function RegisterHandler(
+  handlerTarget: any,
+  propertyKey: string | symbol,
+  descriptor: TypedPropertyDescriptor<any>
+) {
   if (handlerTarget.prototype) return undefined;
   return createMethodDecorator(
     ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
@@ -33,5 +37,5 @@ export default function RegisterHandler(handlerTarget: any) {
       context.typegraphqlMeta.getHandler = () => handlerTarget;
       return next();
     }
-  );
+  )(handlerTarget, propertyKey, descriptor);
 }

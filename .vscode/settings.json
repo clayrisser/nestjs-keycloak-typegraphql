@@ -20,6 +20,7 @@
     "kauth",
     "keycloak",
     "lang",
+    "middlewares",
     "mjs",
     "nestjs",
     "openid",

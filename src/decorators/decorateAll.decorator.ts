@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 20:14:37
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 17-07-2021 21:25:54
+ * Last Modified: 20-07-2021 00:40:32
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * https://github.com/Papooch/decorate-all/blob/main/src/lib/decorate-all.decorator.ts

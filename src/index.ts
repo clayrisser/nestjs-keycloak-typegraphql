@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:24
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 22:58:51
+ * Last Modified: 20-07-2021 02:19:15
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -25,6 +25,7 @@
 import { DynamicModule, Global, Logger, Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import AuthCheckerProvider from './authChecker.provider';
+import AuthGuardProvider from './authGuard.provider';
 import ResourceGuardProvider from './resourceGuard.provider';
 import WrapContextProvider from './wrapContext.provider';
 import {
@@ -47,6 +48,7 @@ export default class KeycloakModule {
       imports: KeycloakModule.imports,
       providers: [
         AuthCheckerProvider,
+        AuthGuardProvider,
         ResourceGuardProvider,
         WrapContextProvider,
         {
@@ -56,6 +58,7 @@ export default class KeycloakModule {
       ],
       exports: [
         AuthCheckerProvider,
+        AuthGuardProvider,
         KEYCLOAK_TYPEGRAPHQL_OPTIONS,
         ResourceGuardProvider,
         WrapContextProvider
@@ -72,12 +75,14 @@ export default class KeycloakModule {
       imports: [...KeycloakModule.imports, ...(asyncOptions.imports || [])],
       providers: [
         AuthCheckerProvider,
+        AuthGuardProvider,
         KeycloakModule.createOptionsProvider(asyncOptions),
         ResourceGuardProvider,
         WrapContextProvider
       ],
       exports: [
         AuthCheckerProvider,
+        AuthGuardProvider,
         KEYCLOAK_TYPEGRAPHQL_OPTIONS,
         ResourceGuardProvider,
         WrapContextProvider
@@ -102,7 +107,9 @@ export default class KeycloakModule {
 export { AuthCheckerProvider, ResourceGuardProvider, WrapContextProvider };
 
 export * from './authChecker.provider';
+export * from './authGuard.provider';
 export * from './decorators';
+export * from './deferMiddleware';
 export * from './resourceGuard.provider';
 export * from './types';
 export * from './wrapContext.provider';

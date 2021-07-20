@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 18:46:50
+ * Last Modified: 20-07-2021 00:41:23
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,8 +24,8 @@
 
 import { Resource as KeycloakResource } from 'nestjs-keycloak';
 import { applyDecorators } from '@nestjs/common';
-import RegisterHandler from './registerHandler.decorator';
+import RegisterClass from './registerClass.decorator';
 
 export default function Resource(resource: string) {
-  return applyDecorators(KeycloakResource(resource), RegisterHandler);
+  return applyDecorators(KeycloakResource(resource), RegisterClass);
 }

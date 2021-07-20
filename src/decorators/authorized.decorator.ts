@@ -4,7 +4,7 @@
  * File Created: 19-07-2021 18:40:53
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 19-07-2021 18:54:55
+ * Last Modified: 20-07-2021 02:10:56
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -23,6 +23,7 @@
  */
 
 import { Authorized as TypeGraphqlAuthorized } from 'type-graphql';
+import { Authorized as KeycloakAuthorized } from 'nestjs-keycloak';
 import { MethodAndPropDecorator } from 'type-graphql/dist/decorators/types';
 import { applyDecorators } from '@nestjs/common';
 import RegisterHandler from './registerHandler.decorator';
@@ -35,11 +36,10 @@ export function Authorized<RoleType = string>(
 export function Authorized<RoleType = string>(
   ...roles: RoleType[]
 ): MethodAndPropDecorator;
-export function Authorized<RoleType = string>(
-  ...roles: RoleType[] | [RoleType[]]
-): MethodDecorator {
+export function Authorized(...roles: string[] | [string[]]): MethodDecorator {
   return applyDecorators(
     TypeGraphqlAuthorized(...roles),
+    KeycloakAuthorized(...roles),
     RegisterClass,
     RegisterHandler
   );

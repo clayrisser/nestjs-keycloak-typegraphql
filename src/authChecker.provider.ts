@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 22:59:09
+ * Last Modified: 20-07-2021 02:16:28
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -51,9 +51,9 @@ const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
     function getResource(context: GraphqlCtx): string | null {
       const { getClass } = context.typegraphqlMeta || {};
       if (!getClass) return null;
-      const hello = getClass();
-      if (!hello) return null;
-      return reflector.get<string>(RESOURCE, hello);
+      const classTarget = getClass();
+      if (!classTarget) return null;
+      return reflector.get<string>(RESOURCE, classTarget);
     }
 
     return async (
