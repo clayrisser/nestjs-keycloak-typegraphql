@@ -1,3 +1,27 @@
+/**
+ * File: /.eslintrc.js
+ * Project: nestjs-keycloak-typegraphql
+ * File Created: 17-07-2021 18:57:35
+ * Author: Clay Risser <clayrisser@gmail.com>
+ * -----
+ * Last Modified: 19-07-2021 23:12:56
+ * Modified By: Clay Risser <clayrisser@gmail.com>
+ * -----
+ * Clay Risser (c) Copyright 2021
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 const fs = require('fs');
 
 const cspellWords = JSON.parse(
@@ -32,7 +56,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'max-classes-per-file': 'off',
     'max-lines': ['error', 500],
-    'max-lines-per-function': ['warn', 50],
+    'max-lines-per-function': ['warn', 99],
     'no-await-in-loop': 'off',
     'no-empty-function': ['warn', { allow: ['constructors'] }],
     'no-extra-boolean-cast': 'off',

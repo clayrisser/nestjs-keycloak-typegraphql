@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 18:55:57
+ * Last Modified: 19-07-2021 22:59:09
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -23,15 +23,16 @@
  */
 
 import { AuthChecker, ResolverData } from 'type-graphql';
-import { DiscoveryService, Reflector } from '@nestjs/core';
 import { HttpService } from '@nestjs/axios';
 import { Keycloak } from 'keycloak-connect';
 import { Logger, FactoryProvider } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import {
   KEYCLOAK,
   KEYCLOAK_OPTIONS,
   KeycloakOptions,
-  KeycloakService
+  KeycloakService,
+  RESOURCE
 } from 'nestjs-keycloak';
 import { GraphqlCtx } from './types';
 
@@ -40,21 +41,21 @@ export const AUTH_CHECKER = 'AUTH_CHECKER';
 
 const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
   provide: AUTH_CHECKER,
-  inject: [
-    KEYCLOAK_OPTIONS,
-    KEYCLOAK,
-    HttpService,
-    DiscoveryService,
-    Reflector
-  ],
+  inject: [KEYCLOAK_OPTIONS, KEYCLOAK, HttpService, Reflector],
   useFactory: (
     options: KeycloakOptions,
     keycloak: Keycloak,
     httpService: HttpService,
-    _discoveryService: DiscoveryService,
-    _reflector: Reflector
+    reflector: Reflector
   ) => {
-    // TODO: use reflector to find decorators
+    function getResource(context: GraphqlCtx): string | null {
+      const { getClass } = context.typegraphqlMeta || {};
+      if (!getClass) return null;
+      const hello = getClass();
+      if (!hello) return null;
+      return reflector.get<string>(RESOURCE, hello);
+    }
+
     return async (
       { context }: ResolverData<GraphqlCtx>,
       roles: (string | string[])[] = []
@@ -67,11 +68,13 @@ const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
       );
       const username = (await keycloakService.getUserInfo())?.preferredUsername;
       if (!username) return false;
-      const resource = context.typegraphqlMeta?.resource;
+      const resource = getResource(context);
       logger.verbose(
         `resource${
           resource ? ` '${resource}'` : ''
-        } for '${username}' requires roles [ ${roles.join(' | ')} ]`
+        } for '${username}' requires ${
+          roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
+        }`
       );
       if (await keycloakService.isAuthorizedByRoles(roles)) {
         logger.verbose(`authorization for '${username}' granted`);

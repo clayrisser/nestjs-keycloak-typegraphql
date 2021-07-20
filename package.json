@@ -1,6 +1,6 @@
 {
   "name": "nestjs-keycloak-typegraphql",
-  "version": "2.0.0-rc.17",
+  "version": "2.0.0-rc.18",
   "description": "nestjs module for authenticating typegraphql with keycloak",
   "sideEffects": false,
   "keywords": [
