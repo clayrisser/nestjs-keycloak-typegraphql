@@ -1,10 +1,10 @@
 /**
  * File: /src/decorators/registerClass.decorator.ts
  * Project: nestjs-keycloak-typegraphql
- * File Created: 19-07-2021 18:43:29
+ * File Created: 19-07-2021 18:42:26
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 20-07-2021 02:11:14
+ * Last Modified: 21-07-2021 02:26:49
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -21,19 +21,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { createMethodDecorator, ResolverData, NextFn } from 'type-graphql';
 import DecorateAll from './decorateAll.decorator';
 import { GraphqlCtx } from '../types';
 
-export default function RegisterClass(classTarget: any) {
-  if (!classTarget.prototype) return undefined;
+export default function RegisterClass(target: any): void | Function {
+  if (!target.prototype) return undefined;
   return DecorateAll(
     createMethodDecorator(
       ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
         if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
-        context.typegraphqlMeta.getClass = () => classTarget;
+        console.log('setting get class', target);
+        context.typegraphqlMeta.getClass = () => target;
         return next();
       }
     )
-  )(classTarget);
+  )(target);
 }

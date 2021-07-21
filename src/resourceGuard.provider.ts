@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-07-2021 02:18:59
+ * Last Modified: 21-07-2021 02:39:28
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -66,16 +66,22 @@ const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
 
     function getScopes(context: GraphqlCtx) {
       const { getClass, getHandler } = context.typegraphqlMeta || {};
+      console.log('getClass', getClass);
+      console.log('getHandler', getHandler);
       let classTarget: Type<any> | null = null;
       let handlerTarget: Function | null = null;
       if (getClass) classTarget = getClass();
       if (getHandler) handlerTarget = getHandler();
+      console.log('classTarget', classTarget);
+      console.log('handlerTarget', handlerTarget);
       const handlerScopes = handlerTarget
         ? reflector.get<string[]>(SCOPES, handlerTarget) || []
         : [];
+      console.log('handlerScopes', handlerScopes);
       const classScopes = classTarget
         ? reflector.get<string[]>(SCOPES, classTarget) || []
         : [];
+      console.log('classScopes', classScopes);
       return [...new Set([...handlerScopes, ...classScopes])];
     }
 
@@ -87,9 +93,11 @@ const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
         context
       );
       const resource = getResource(context);
+      console.log('RResource', resource);
       if (!resource) return true;
-      const scopes = getScopes(context) || [];
-      if (!scopes.length) return true;
+      const scopes = getScopes(context);
+      console.log('RScopes', scopes);
+      if (!scopes?.length) return true;
       const username = (await keycloakService.getUserInfo())?.preferredUsername;
       if (!username) return false;
       logger.verbose(

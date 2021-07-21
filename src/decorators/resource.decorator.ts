@@ -1,13 +1,13 @@
 /**
  * File: /src/decorators/resource.decorator.ts
- * Project: nestjs-keycloak
- * File Created: 14-07-2021 11:43:57
- * Author: Clay Risser <email@clayrisser.com>
+ * Project: nestjs-keycloak-typegraphql
+ * File Created: 21-07-2021 02:12:50
+ * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 20-07-2021 00:41:23
+ * Last Modified: 21-07-2021 02:34:32
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Clay Risser (c) Copyright 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

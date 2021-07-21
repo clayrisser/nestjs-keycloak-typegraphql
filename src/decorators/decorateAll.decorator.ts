@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 20:14:37
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 20-07-2021 00:40:32
+ * Last Modified: 20-07-2021 14:00:53
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * https://github.com/Papooch/decorate-all/blob/main/src/lib/decorate-all.decorator.ts
@@ -56,7 +56,7 @@ export default function DecorateAll(
       if (options.exclude?.includes(propName)) continue;
       // eslint-disable-next-line no-continue
       if (!isMethod) continue;
-      decorator(target, propName, descriptor);
+      decorator(target.prototype, propName, descriptor);
       Object.defineProperty(target.prototype, propName, descriptor);
     }
   };

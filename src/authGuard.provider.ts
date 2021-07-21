@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-07-2021 02:18:24
+ * Last Modified: 21-07-2021 02:02:45
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -58,8 +58,10 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
   ) => {
     function getResource(context: GraphqlCtx): string | null {
       const { getClass } = context.typegraphqlMeta || {};
+      console.log('getClass', getClass);
       if (!getClass) return null;
       const classTarget = getClass();
+      console.log('classTarget', classTarget);
       if (!classTarget) return null;
       return reflector.get<string>(RESOURCE, classTarget);
     }
@@ -95,8 +97,10 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
       const roles = getRoles(context);
       if (typeof roles === 'undefined') return true;
       const username = (await keycloakService.getUserInfo())?.preferredUsername;
+      console.log('Ausername', username);
       if (!username) return false;
       const resource = getResource(context);
+      console.log('Aresource', resource);
       logger.verbose(
         `resource${
           resource ? ` '${resource}'` : ''

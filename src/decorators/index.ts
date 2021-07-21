@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 22:27:15
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 18:55:06
+ * Last Modified: 21-07-2021 02:29:14
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,18 +22,20 @@
  * limitations under the License.
  */
 
+import Authorized from './authorized.decorator';
 import DecorateAll from './decorateAll.decorator';
 import RegisterClass from './registerClass.decorator';
 import RegisterHandler from './registerHandler.decorator';
 import Resource from './resource.decorator';
 import Scopes from './scopes.decorator';
-import { Authorized } from './authorized.decorator';
+import { Resolver } from './resolver.decorator';
 
 export {
   Authorized,
   DecorateAll,
   RegisterClass,
   RegisterHandler,
+  Resolver,
   Resource,
   Scopes
 };

@@ -4,7 +4,7 @@
  * File Created: 19-07-2021 18:42:26
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 20-07-2021 02:11:25
+ * Last Modified: 21-07-2021 02:44:01
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -26,16 +26,18 @@ import { createMethodDecorator, ResolverData, NextFn } from 'type-graphql';
 import { GraphqlCtx } from '../types';
 
 export default function RegisterHandler(
-  handlerTarget: any,
+  target: any,
   propertyKey: string | symbol,
   descriptor: TypedPropertyDescriptor<any>
-) {
-  if (handlerTarget.prototype) return undefined;
+): void | TypedPropertyDescriptor<any> {
+  if (target.prototype) return undefined;
+  console.log('creating create reg hand');
   return createMethodDecorator(
     ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
       if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
-      context.typegraphqlMeta.getHandler = () => handlerTarget;
+      console.log('setting get handler', descriptor.value);
+      context.typegraphqlMeta.getHandler = () => descriptor.value;
       return next();
     }
-  )(handlerTarget, propertyKey, descriptor);
+  )(target, propertyKey, descriptor);
 }

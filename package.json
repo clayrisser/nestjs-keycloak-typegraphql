@@ -1,19 +1,19 @@
 {
   "name": "nestjs-keycloak-typegraphql",
-  "version": "2.0.0-rc.31",
+  "version": "2.0.0-rc.48",
   "description": "nestjs module for authenticating typegraphql with keycloak",
   "sideEffects": false,
   "keywords": [
-    "nestjs-keycloak-typegraphql",
-    "nestjs",
-    "typegraphql",
-    "keycloak",
     "auth",
     "authentication",
     "authorization",
-    "scope",
+    "keycloak",
+    "nestjs",
+    "nestjs-keycloak-typegraphql",
     "oauth",
-    "openid"
+    "openid",
+    "scope",
+    "typegraphql"
   ],
   "homepage": "https://github.com/silicon-hills/nestjs-keycloak-typegraphql",
   "bugs": {
