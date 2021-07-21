@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:24
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-07-2021 03:06:28
+ * Last Modified: 21-07-2021 03:33:12
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -115,6 +115,7 @@ export * from './authChecker.provider';
 export * from './authGuard.provider';
 export * from './decorators';
 export * from './deferMiddleware';
+export * from './middlewares.provider';
 export * from './resourceGuard.provider';
 export * from './types';
 export * from './wrapContext.provider';
