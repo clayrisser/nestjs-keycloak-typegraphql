@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-07-2021 02:16:28
+ * Last Modified: 21-07-2021 03:05:23
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -37,7 +37,7 @@ import {
 import { GraphqlCtx } from './types';
 
 const logger = new Logger('AuthChecker');
-export const AUTH_CHECKER = 'AUTH_CHECKER';
+export const AUTH_CHECKER = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_CHECKER';
 
 const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
   provide: AUTH_CHECKER,

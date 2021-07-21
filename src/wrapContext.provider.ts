@@ -4,7 +4,7 @@
  * File Created: 16-07-2021 19:45:17
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 19:34:23
+ * Last Modified: 21-07-2021 03:05:29
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -34,7 +34,7 @@ import {
 } from 'nestjs-keycloak';
 import { GraphqlCtx, HashMap } from './types';
 
-export const WRAP_CONTEXT = 'WRAP_CONTEXT';
+export const WRAP_CONTEXT = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_WRAP_CONTEXT';
 
 const WrapContextProvider: FactoryProvider<GraphqlCtx> = {
   provide: WRAP_CONTEXT,

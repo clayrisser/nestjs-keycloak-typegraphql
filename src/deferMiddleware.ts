@@ -4,7 +4,7 @@
  * File Created: 20-07-2021 02:12:54
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 20-07-2021 02:29:51
+ * Last Modified: 21-07-2021 03:11:02
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -33,14 +33,12 @@ export default function deferMiddleware(
   if (!context.typegraphqlMeta.deferredMiddlewares) {
     context.typegraphqlMeta.deferredMiddlewares = [];
   }
-  console.log('added defered middleware');
   context.typegraphqlMeta.deferredMiddlewares.push(middleware);
 }
 
 export function combineMiddlewares(middlewares: MiddlewareFn[]) {
   const middleware = middlewares.pop();
   return (data: ResolverData<GraphqlCtx>, next: NextFn) => {
-    console.log('going through defer chain');
     if (!middleware) return next();
     return middleware(
       data,

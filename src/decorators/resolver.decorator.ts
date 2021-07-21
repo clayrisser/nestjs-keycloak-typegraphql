@@ -4,7 +4,7 @@
  * File Created: 19-07-2021 18:40:53
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 21-07-2021 02:52:05
+ * Last Modified: 21-07-2021 03:10:24
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -36,6 +36,7 @@ import {
 } from 'type-graphql/dist/decorators/types';
 import DecorateAll from './decorateAll.decorator';
 import RegisterHandler from './registerHandler.decorator';
+import RegisterClass from './registerClass.decorator';
 import { GraphqlCtx } from '../types';
 import { combineMiddlewares } from '../deferMiddleware';
 
@@ -54,20 +55,20 @@ export function Resolver(
   maybeOptions?: AbstractClassOptions
 ): ClassDecorator {
   return applyDecorators(
-    RegisterHandler,
-    TypeGraphqlResolver(objectTypeOrTypeFuncOrMaybeOptions, maybeOptions),
     DecorateAll(
       createMethodDecorator((data: ResolverData<GraphqlCtx>, next: NextFn) => {
         const { context } = data;
         if (!context.typegraphqlMeta?.deferredMiddlewares?.length) {
           return next();
         }
-        console.log('combining middlewares');
         return combineMiddlewares(context.typegraphqlMeta.deferredMiddlewares)(
           data,
           next
         );
       })
-    )
+    ),
+    DecorateAll(RegisterHandler),
+    RegisterClass,
+    TypeGraphqlResolver(objectTypeOrTypeFuncOrMaybeOptions, maybeOptions)
   );
 }

@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 19:16:13
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 20-07-2021 01:58:21
+ * Last Modified: 21-07-2021 03:27:51
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -22,15 +22,17 @@
  * limitations under the License.
  */
 
+import Token from 'keycloak-connect/middleware/auth-utils/token';
 import { ApiProperty } from '@nestjs/swagger';
 import { KeycloakContext } from 'keycloak-connect-graphql';
 import { KeycloakService, KeycloakRequest } from 'nestjs-keycloak';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
+import { RequiredActionAlias } from 'keycloak-admin/lib/defs/requiredActionProviderRepresentation';
 import {
-  ObjectType,
   Field,
-  registerEnumType,
-  MiddlewareFn
+  MiddlewareFn,
+  ObjectType,
+  registerEnumType
 } from 'type-graphql';
 import { Request } from 'express';
 import { Type } from '@nestjs/common';
@@ -225,6 +227,236 @@ export class UserInfo {
   sub!: string;
 
   [key: string]: any;
+}
+
+@ObjectType()
+export class GrantTokensOptions {
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  password?: string;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  refreshToken?: string;
+
+  @ApiProperty()
+  @Field((_type) => [String], { nullable: true })
+  scope?: string | string[];
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  username?: string;
+}
+
+@ObjectType()
+export class RefreshTokenGrant {
+  @ApiProperty()
+  @Field((_type) => Token, { nullable: true })
+  accessToken?: Token;
+
+  @ApiProperty()
+  @Field((_type) => Number, { nullable: true })
+  expiresIn?: number;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  message!: string;
+
+  @ApiProperty()
+  @Field((_type) => Number, { nullable: true })
+  refreshExpiresIn?: number;
+
+  @ApiProperty()
+  @Field((_type) => Token, { nullable: true })
+  refreshToken?: Token;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  scope?: string;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  tokenType?: string;
+}
+
+export class UserConsent {
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  clientId?: string;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  createDate?: string;
+
+  @ApiProperty()
+  @Field((_type) => [String], { nullable: true })
+  grantedClientScopes?: string[];
+
+  @ApiProperty()
+  @Field((_type) => Number, { nullable: true })
+  lastUpdatedDate?: number;
+}
+
+export class Credential {
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  algorithm?: string;
+
+  @ApiProperty()
+  config?: Record<string, any>;
+
+  @ApiProperty()
+  @Field((_type) => Number, { nullable: true })
+  counter?: number;
+
+  @ApiProperty()
+  @Field((_type) => Number)
+  createdDate?: number;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  device?: string;
+
+  @ApiProperty()
+  @Field((_type) => Number, { nullable: true })
+  digits?: number;
+
+  @ApiProperty()
+  @Field((_type) => Number, { nullable: true })
+  hashIterations?: number;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  hashedSaltedValue?: string;
+
+  @ApiProperty()
+  @Field((_type) => Number, { nullable: true })
+  period?: number;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  salt?: string;
+
+  @ApiProperty()
+  @Field((_type) => Boolean, { nullable: true })
+  temporary?: boolean;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  type?: string;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  value?: string;
+}
+
+export class FederatedIdentityRepresentation {
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  identityProvider?: string;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  userId?: string;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  userName?: string;
+}
+
+export class User {
+  @ApiProperty()
+  access?: Record<string, boolean>;
+
+  @ApiProperty()
+  attributes?: Record<string, any>;
+
+  @ApiProperty()
+  @Field((_type) => [UserConsent], { nullable: true })
+  clientConsents?: UserConsent[];
+
+  @ApiProperty()
+  clientRoles?: Record<string, any>;
+
+  @ApiProperty()
+  @Field((_type) => Number, { nullable: true })
+  createdTimestamp?: number;
+
+  @ApiProperty()
+  @Field((_type) => [Credential], { nullable: true })
+  credentials?: Credential[];
+
+  @ApiProperty()
+  @Field((_type) => [String], { nullable: true })
+  disableableCredentialTypes?: string[];
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  email?: string;
+
+  @ApiProperty()
+  @Field((_type) => Boolean, { nullable: true })
+  emailVerified?: boolean;
+
+  @ApiProperty()
+  @Field((_type) => Boolean, { nullable: true })
+  enabled?: boolean;
+
+  @ApiProperty()
+  @Field((_type) => [FederatedIdentityRepresentation], { nullable: true })
+  federatedIdentities?: FederatedIdentityRepresentation[];
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  federationLink?: string;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  firstName?: string;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  groups?: string[];
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  id?: string;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  lastName?: string;
+
+  @ApiProperty()
+  @Field((_type) => Number, { nullable: true })
+  notBefore?: number;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  origin?: string;
+
+  @ApiProperty()
+  @Field((_type) => [String], { nullable: true })
+  realmRoles?: string[];
+
+  @ApiProperty()
+  @Field((_type) => [RequiredActionAlias], { nullable: true })
+  requiredActions?: RequiredActionAlias[];
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  self?: string;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  serviceAccountClientId?: string;
+
+  @ApiProperty()
+  @Field((_type) => Boolean, { nullable: true })
+  totp?: boolean;
+
+  @ApiProperty()
+  @Field((_type) => String, { nullable: true })
+  username?: string;
 }
 
 export const KEYCLOAK_TYPEGRAPHQL_OPTIONS = 'KEYCLOAK_TYPEGRAPHQL_OPTIONS';

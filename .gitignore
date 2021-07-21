@@ -35,6 +35,7 @@ yarn-error.log*
 /dist
 /es
 /lib
+/target
 package-lock.json
 pnpm-lock.yaml
 tsconfig.tsbuildinfo

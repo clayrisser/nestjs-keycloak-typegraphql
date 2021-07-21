@@ -4,7 +4,7 @@
  * File Created: 19-07-2021 18:42:26
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 21-07-2021 02:26:49
+ * Last Modified: 21-07-2021 03:10:08
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -32,7 +32,6 @@ export default function RegisterClass(target: any): void | Function {
     createMethodDecorator(
       ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
         if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
-        console.log('setting get class', target);
         context.typegraphqlMeta.getClass = () => target;
         return next();
       }

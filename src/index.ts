@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:24
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-07-2021 02:19:15
+ * Last Modified: 21-07-2021 03:06:28
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -26,6 +26,7 @@ import { DynamicModule, Global, Logger, Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import AuthCheckerProvider from './authChecker.provider';
 import AuthGuardProvider from './authGuard.provider';
+import MiddlewaresProvider from './middlewares.provider';
 import ResourceGuardProvider from './resourceGuard.provider';
 import WrapContextProvider from './wrapContext.provider';
 import {
@@ -49,6 +50,7 @@ export default class KeycloakModule {
       providers: [
         AuthCheckerProvider,
         AuthGuardProvider,
+        MiddlewaresProvider,
         ResourceGuardProvider,
         WrapContextProvider,
         {
@@ -60,6 +62,7 @@ export default class KeycloakModule {
         AuthCheckerProvider,
         AuthGuardProvider,
         KEYCLOAK_TYPEGRAPHQL_OPTIONS,
+        MiddlewaresProvider,
         ResourceGuardProvider,
         WrapContextProvider
       ]
@@ -77,6 +80,7 @@ export default class KeycloakModule {
         AuthCheckerProvider,
         AuthGuardProvider,
         KeycloakModule.createOptionsProvider(asyncOptions),
+        MiddlewaresProvider,
         ResourceGuardProvider,
         WrapContextProvider
       ],
@@ -84,6 +88,7 @@ export default class KeycloakModule {
         AuthCheckerProvider,
         AuthGuardProvider,
         KEYCLOAK_TYPEGRAPHQL_OPTIONS,
+        MiddlewaresProvider,
         ResourceGuardProvider,
         WrapContextProvider
       ]

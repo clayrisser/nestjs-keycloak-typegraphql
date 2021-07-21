@@ -1,6 +1,6 @@
 {
   "name": "nestjs-keycloak-typegraphql",
-  "version": "2.0.0-rc.48",
+  "version": "2.0.0-rc.50",
   "description": "nestjs module for authenticating typegraphql with keycloak",
   "sideEffects": false,
   "keywords": [
@@ -69,9 +69,10 @@
     "@nestjs/swagger": "^5.0.4",
     "core-js": "^3.15.2",
     "express": "^4.17.1",
+    "keycloak-admin": "^1.14.18",
     "keycloak-connect": "^14.0.0",
     "keycloak-connect-graphql": "^0.7.0",
-    "nestjs-keycloak": "^2.0.0-rc.95",
+    "nestjs-keycloak": "^2.0.0-rc.96",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1"
   },
