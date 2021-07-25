@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-07-2021 04:32:52
+ * Last Modified: 25-07-2021 09:04:27
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -87,7 +87,7 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
     }
 
     function getIsPublic(context: GraphqlCtx): boolean {
-      const { getClass } = context.typegraphqlMeta || {};
+      const { getHandler } = context.typegraphqlMeta || {};
       let handlerTarget: Function | null = null;
       if (getHandler) handlerTarget = getHandler();
       return handlerTarget
@@ -98,7 +98,7 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
     async function canActivate(context: GraphqlCtx): Promise<boolean> {
       const isPublic = getIsPublic(context);
       const roles = getRoles(context);
-      if (typeof roles === 'undefined') return true;
+      if (isPublic || typeof roles === 'undefined') return true;
       const keycloakService = new KeycloakService(
         options,
         keycloak,

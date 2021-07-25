@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-07-2021 03:05:23
+ * Last Modified: 25-07-2021 09:05:14
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -32,6 +32,7 @@ import {
   KEYCLOAK_OPTIONS,
   KeycloakOptions,
   KeycloakService,
+  PUBLIC,
   RESOURCE
 } from 'nestjs-keycloak';
 import { GraphqlCtx } from './types';
@@ -56,10 +57,21 @@ const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
       return reflector.get<string>(RESOURCE, classTarget);
     }
 
+    function getIsPublic(context: GraphqlCtx): boolean {
+      const { getHandler } = context.typegraphqlMeta || {};
+      let handlerTarget: Function | null = null;
+      if (getHandler) handlerTarget = getHandler();
+      return handlerTarget
+        ? !!reflector.get<boolean>(PUBLIC, handlerTarget)
+        : false;
+    }
+
     return async (
       { context }: ResolverData<GraphqlCtx>,
       roles: (string | string[])[] = []
     ) => {
+      const isPublic = getIsPublic(context);
+      if (isPublic) return true;
       const keycloakService = new KeycloakService(
         options,
         keycloak,
