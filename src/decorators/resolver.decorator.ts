@@ -4,7 +4,7 @@
  * File Created: 19-07-2021 18:40:53
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 21-07-2021 03:10:24
+ * Last Modified: 25-07-2021 04:49:46
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -22,23 +22,13 @@
  * limitations under the License.
  */
 
+import { ClassType, Resolver as TypeGraphqlResolver } from 'type-graphql';
 import { applyDecorators } from '@nestjs/common';
-import {
-  ClassType,
-  NextFn,
-  Resolver as TypeGraphqlResolver,
-  ResolverData,
-  createMethodDecorator
-} from 'type-graphql';
 import {
   ClassTypeResolver,
   AbstractClassOptions
 } from 'type-graphql/dist/decorators/types';
-import DecorateAll from './decorateAll.decorator';
-import RegisterHandler from './registerHandler.decorator';
-import RegisterClass from './registerClass.decorator';
-import { GraphqlCtx } from '../types';
-import { combineMiddlewares } from '../deferMiddleware';
+import Guards from './guards.decorator';
 
 export function Resolver(): ClassDecorator;
 export function Resolver(options: AbstractClassOptions): ClassDecorator;
@@ -55,20 +45,7 @@ export function Resolver(
   maybeOptions?: AbstractClassOptions
 ): ClassDecorator {
   return applyDecorators(
-    DecorateAll(
-      createMethodDecorator((data: ResolverData<GraphqlCtx>, next: NextFn) => {
-        const { context } = data;
-        if (!context.typegraphqlMeta?.deferredMiddlewares?.length) {
-          return next();
-        }
-        return combineMiddlewares(context.typegraphqlMeta.deferredMiddlewares)(
-          data,
-          next
-        );
-      })
-    ),
-    DecorateAll(RegisterHandler),
-    RegisterClass,
+    Guards(),
     TypeGraphqlResolver(objectTypeOrTypeFuncOrMaybeOptions, maybeOptions)
   );
 }

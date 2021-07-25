@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-07-2021 03:10:56
+ * Last Modified: 25-07-2021 04:32:52
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -39,6 +39,7 @@ import {
   KEYCLOAK_OPTIONS,
   KeycloakOptions,
   KeycloakService,
+  PUBLIC,
   RESOURCE
 } from 'nestjs-keycloak';
 import deferMiddleware from './deferMiddleware';
@@ -85,15 +86,25 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
       return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
     }
 
+    function getIsPublic(context: GraphqlCtx): boolean {
+      const { getClass } = context.typegraphqlMeta || {};
+      let handlerTarget: Function | null = null;
+      if (getHandler) handlerTarget = getHandler();
+      return handlerTarget
+        ? !!reflector.get<boolean>(PUBLIC, handlerTarget)
+        : false;
+    }
+
     async function canActivate(context: GraphqlCtx): Promise<boolean> {
+      const isPublic = getIsPublic(context);
+      const roles = getRoles(context);
+      if (typeof roles === 'undefined') return true;
       const keycloakService = new KeycloakService(
         options,
         keycloak,
         httpService,
         context
       );
-      const roles = getRoles(context);
-      if (typeof roles === 'undefined') return true;
       const username = (await keycloakService.getUserInfo())?.preferredUsername;
       if (!username) return false;
       const resource = getResource(context);

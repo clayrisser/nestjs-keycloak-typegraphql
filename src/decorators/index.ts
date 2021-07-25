@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 22:27:15
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-07-2021 03:10:02
+ * Last Modified: 25-07-2021 04:46:17
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -23,8 +23,9 @@
  */
 
 import DecorateAll from './decorateAll.decorator';
+import Guards from './guards.decorator';
 import RegisterClass from './registerClass.decorator';
 import RegisterHandler from './registerHandler.decorator';
 import { Resolver } from './resolver.decorator';
 
-export { DecorateAll, RegisterClass, RegisterHandler, Resolver };
+export { DecorateAll, RegisterClass, RegisterHandler, Resolver, Guards };
