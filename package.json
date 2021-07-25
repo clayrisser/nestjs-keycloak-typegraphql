@@ -72,7 +72,7 @@
     "keycloak-admin": "^1.14.18",
     "keycloak-connect": "^14.0.0",
     "keycloak-connect-graphql": "^0.7.0",
-    "nestjs-keycloak": "^2.0.0-rc.98",
+    "nestjs-keycloak": "^2.0.0-rc.99",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1"
   },
