@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-07-2021 09:05:14
+ * Last Modified: 06-05-2022 04:30:39
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,23 +22,23 @@
  * limitations under the License.
  */
 
-import { AuthChecker, ResolverData } from 'type-graphql';
-import { HttpService } from '@nestjs/axios';
-import { Keycloak } from 'keycloak-connect';
-import { Logger, FactoryProvider } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
+import { AuthChecker, ResolverData } from "type-graphql";
+import { HttpService } from "@nestjs/axios";
+import { Keycloak } from "keycloak-connect";
+import { Logger, FactoryProvider } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
 import {
   KEYCLOAK,
   KEYCLOAK_OPTIONS,
   KeycloakOptions,
   KeycloakService,
   PUBLIC,
-  RESOURCE
-} from 'nestjs-keycloak';
-import { GraphqlCtx } from './types';
+  RESOURCE,
+} from "@risserlabs/nestjs-keycloak";
+import { GraphqlCtx } from "./types";
 
-const logger = new Logger('AuthChecker');
-export const AUTH_CHECKER = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_CHECKER';
+const logger = new Logger("AuthChecker");
+export const AUTH_CHECKER = "NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_CHECKER";
 
 const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
   provide: AUTH_CHECKER,
@@ -83,9 +83,9 @@ const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
       const resource = getResource(context);
       logger.verbose(
         `resource${
-          resource ? ` '${resource}'` : ''
+          resource ? ` '${resource}'` : ""
         } for '${username}' requires ${
-          roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
+          roles.length ? `roles [ ${roles.join(" | ")} ]` : "authentication"
         }`
       );
       if (await keycloakService.isAuthorizedByRoles(roles)) {
@@ -95,7 +95,7 @@ const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
       logger.verbose(`authorization for '${username}' denied`);
       return false;
     };
-  }
+  },
 };
 
 export default AuthCheckerProvider;

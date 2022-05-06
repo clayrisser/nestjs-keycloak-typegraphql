@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-declare module 'keycloak-connect/middleware/auth-utils/token' {
+declare module "keycloak-connect/middleware/auth-utils/token" {
   namespace Token {
     interface TokenContentRealmAccess {
       roles: string[];
@@ -48,7 +48,7 @@ declare module 'keycloak-connect/middleware/auth-utils/token' {
     type ResourceAccess = HashMap<ResourceAccessItem>;
 
     interface TokenContent {
-      'allowed-origins'?: string[];
+      "allowed-origins"?: string[];
       acr?: string;
       azp?: string;
       email_verified?: boolean;

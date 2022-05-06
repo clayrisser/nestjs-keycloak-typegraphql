@@ -22,8 +22,8 @@
  * limitations under the License.
  */
 
-import { createMethodDecorator, ResolverData, NextFn } from 'type-graphql';
-import { GraphqlCtx } from '../types';
+import { createMethodDecorator, ResolverData, NextFn } from "type-graphql";
+import { GraphqlCtx } from "../types";
 
 export default function RegisterHandler(
   target: any,

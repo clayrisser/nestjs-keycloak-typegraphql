@@ -22,18 +22,18 @@
  * limitations under the License.
  */
 
-import { DynamicModule, Global, Logger, Module } from '@nestjs/common';
-import { HttpModule } from '@nestjs/axios';
-import AuthCheckerProvider from './authChecker.provider';
-import AuthGuardProvider from './authGuard.provider';
-import MiddlewaresProvider from './middlewares.provider';
-import ResourceGuardProvider from './resourceGuard.provider';
-import WrapContextProvider from './wrapContext.provider';
+import { DynamicModule, Global, Logger, Module } from "@nestjs/common";
+import { HttpModule } from "@nestjs/axios";
+import AuthCheckerProvider from "./authChecker.provider";
+import AuthGuardProvider from "./authGuard.provider";
+import MiddlewaresProvider from "./middlewares.provider";
+import ResourceGuardProvider from "./resourceGuard.provider";
+import WrapContextProvider from "./wrapContext.provider";
 import {
   KeycloakTypegraphqlOptions,
   KeycloakTypegraphqlAsyncOptions,
-  KEYCLOAK_TYPEGRAPHQL_OPTIONS
-} from './types';
+  KEYCLOAK_TYPEGRAPHQL_OPTIONS,
+} from "./types";
 
 @Global()
 @Module({})
@@ -55,8 +55,8 @@ export default class KeycloakModule {
         WrapContextProvider,
         {
           provide: KEYCLOAK_TYPEGRAPHQL_OPTIONS,
-          useValue: options
-        }
+          useValue: options,
+        },
       ],
       exports: [
         AuthCheckerProvider,
@@ -64,8 +64,8 @@ export default class KeycloakModule {
         KEYCLOAK_TYPEGRAPHQL_OPTIONS,
         MiddlewaresProvider,
         ResourceGuardProvider,
-        WrapContextProvider
-      ]
+        WrapContextProvider,
+      ],
     };
   }
 
@@ -82,7 +82,7 @@ export default class KeycloakModule {
         KeycloakModule.createOptionsProvider(asyncOptions),
         MiddlewaresProvider,
         ResourceGuardProvider,
-        WrapContextProvider
+        WrapContextProvider,
       ],
       exports: [
         AuthCheckerProvider,
@@ -90,8 +90,8 @@ export default class KeycloakModule {
         KEYCLOAK_TYPEGRAPHQL_OPTIONS,
         MiddlewaresProvider,
         ResourceGuardProvider,
-        WrapContextProvider
-      ]
+        WrapContextProvider,
+      ],
     };
   }
 
@@ -104,18 +104,18 @@ export default class KeycloakModule {
     return {
       inject: asyncOptions.inject || [],
       provide: KEYCLOAK_TYPEGRAPHQL_OPTIONS,
-      useFactory: asyncOptions.useFactory
+      useFactory: asyncOptions.useFactory,
     };
   }
 }
 
 export { AuthCheckerProvider, ResourceGuardProvider, WrapContextProvider };
 
-export * from './authChecker.provider';
-export * from './authGuard.provider';
-export * from './decorators';
-export * from './deferMiddleware';
-export * from './middlewares.provider';
-export * from './resourceGuard.provider';
-export * from './types';
-export * from './wrapContext.provider';
+export * from "./authChecker.provider";
+export * from "./authGuard.provider";
+export * from "./decorators";
+export * from "./deferMiddleware";
+export * from "./middlewares.provider";
+export * from "./resourceGuard.provider";
+export * from "./types";
+export * from "./wrapContext.provider";

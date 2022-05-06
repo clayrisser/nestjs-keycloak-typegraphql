@@ -4,7 +4,7 @@
  * File Created: 16-07-2021 19:45:17
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-07-2021 03:05:29
+ * Last Modified: 06-05-2022 04:29:54
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,19 +22,19 @@
  * limitations under the License.
  */
 
-import { FactoryProvider } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { Keycloak } from 'keycloak-connect';
-import { KeycloakContext } from 'keycloak-connect-graphql';
+import { FactoryProvider } from "@nestjs/common";
+import { HttpService } from "@nestjs/axios";
+import { Keycloak } from "keycloak-connect";
+import { KeycloakContext } from "keycloak-connect-graphql";
 import {
   KEYCLOAK,
   KEYCLOAK_OPTIONS,
   KeycloakOptions,
-  KeycloakService
-} from 'nestjs-keycloak';
-import { GraphqlCtx, HashMap } from './types';
+  KeycloakService,
+} from "@risserlabs/nestjs-keycloak";
+import { GraphqlCtx, HashMap } from "./types";
 
-export const WRAP_CONTEXT = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_WRAP_CONTEXT';
+export const WRAP_CONTEXT = "NESTJS_KEYCLOAK_TYPEGRAPHQL_WRAP_CONTEXT";
 
 const WrapContextProvider: FactoryProvider<GraphqlCtx> = {
   provide: WRAP_CONTEXT,
@@ -59,7 +59,7 @@ const WrapContextProvider: FactoryProvider<GraphqlCtx> = {
       );
       return graphqlContext;
     };
-  }
+  },
 };
 
 export default WrapContextProvider;

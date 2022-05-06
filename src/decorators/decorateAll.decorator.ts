@@ -51,7 +51,7 @@ export default function DecorateAll(
     // eslint-disable-next-line no-restricted-syntax
     for (const [propName, descriptor] of Object.entries(descriptors)) {
       const isMethod =
-        typeof descriptor.value === 'function' && propName !== 'constructor';
+        typeof descriptor.value === "function" && propName !== "constructor";
       // eslint-disable-next-line no-continue
       if (options.exclude?.includes(propName)) continue;
       // eslint-disable-next-line no-continue

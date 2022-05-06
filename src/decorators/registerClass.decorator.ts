@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-import { createMethodDecorator, ResolverData, NextFn } from 'type-graphql';
-import DecorateAll from './decorateAll.decorator';
-import { GraphqlCtx } from '../types';
+import { createMethodDecorator, ResolverData, NextFn } from "type-graphql";
+import DecorateAll from "./decorateAll.decorator";
+import { GraphqlCtx } from "../types";
 
 export default function RegisterClass(target: any): void | Function {
   if (!target.prototype) return undefined;

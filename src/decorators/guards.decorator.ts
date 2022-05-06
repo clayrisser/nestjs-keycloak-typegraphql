@@ -22,13 +22,13 @@
  * limitations under the License.
  */
 
-import { applyDecorators } from '@nestjs/common';
-import { NextFn, ResolverData, createMethodDecorator } from 'type-graphql';
-import DecorateAll from './decorateAll.decorator';
-import RegisterClass from './registerClass.decorator';
-import RegisterHandler from './registerHandler.decorator';
-import { GraphqlCtx } from '../types';
-import { combineMiddlewares } from '../deferMiddleware';
+import { applyDecorators } from "@nestjs/common";
+import { NextFn, ResolverData, createMethodDecorator } from "type-graphql";
+import DecorateAll from "./decorateAll.decorator";
+import RegisterClass from "./registerClass.decorator";
+import RegisterHandler from "./registerHandler.decorator";
+import { GraphqlCtx } from "../types";
+import { combineMiddlewares } from "../deferMiddleware";
 
 export default function Guards(): ClassDecorator {
   return applyDecorators(

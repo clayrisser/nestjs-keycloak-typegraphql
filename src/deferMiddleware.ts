@@ -22,8 +22,8 @@
  * limitations under the License.
  */
 
-import { MiddlewareFn, ResolverData, NextFn } from 'type-graphql';
-import { GraphqlCtx } from './types';
+import { MiddlewareFn, ResolverData, NextFn } from "type-graphql";
+import { GraphqlCtx } from "./types";
 
 export default function deferMiddleware(
   context: GraphqlCtx,

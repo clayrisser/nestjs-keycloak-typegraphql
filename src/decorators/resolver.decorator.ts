@@ -22,13 +22,13 @@
  * limitations under the License.
  */
 
-import { ClassType, Resolver as TypeGraphqlResolver } from 'type-graphql';
-import { applyDecorators } from '@nestjs/common';
+import { ClassType, Resolver as TypeGraphqlResolver } from "type-graphql";
+import { applyDecorators } from "@nestjs/common";
 import {
   ClassTypeResolver,
-  AbstractClassOptions
-} from 'type-graphql/dist/decorators/types';
-import Guards from './guards.decorator';
+  AbstractClassOptions,
+} from "type-graphql/dist/decorators/types";
+import Guards from "./guards.decorator";
 
 export function Resolver(): ClassDecorator;
 export function Resolver(options: AbstractClassOptions): ClassDecorator;

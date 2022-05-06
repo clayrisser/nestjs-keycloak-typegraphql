@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-07-2021 09:04:27
+ * Last Modified: 06-05-2022 04:29:44
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,17 +22,17 @@
  * limitations under the License.
  */
 
-import { HttpService } from '@nestjs/axios';
-import { Keycloak } from 'keycloak-connect';
-import { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
-import { Reflector } from '@nestjs/core';
+import { HttpService } from "@nestjs/axios";
+import { Keycloak } from "keycloak-connect";
+import { MiddlewareFn, NextFn, ResolverData } from "type-graphql";
+import { Reflector } from "@nestjs/core";
 import {
   FactoryProvider,
   HttpException,
   HttpStatus,
   Logger,
-  Type
-} from '@nestjs/common';
+  Type,
+} from "@nestjs/common";
 import {
   AUTHORIZED,
   KEYCLOAK,
@@ -40,13 +40,13 @@ import {
   KeycloakOptions,
   KeycloakService,
   PUBLIC,
-  RESOURCE
-} from 'nestjs-keycloak';
-import deferMiddleware from './deferMiddleware';
-import { GraphqlCtx } from './types';
+  RESOURCE,
+} from "@risserlabs/nestjs-keycloak";
+import deferMiddleware from "./deferMiddleware";
+import { GraphqlCtx } from "./types";
 
-const logger = new Logger('AuthGuard');
-export const AUTH_GUARD = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_GUARD';
+const logger = new Logger("AuthGuard");
+export const AUTH_GUARD = "NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_GUARD";
 
 const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
   provide: AUTH_GUARD,
@@ -78,8 +78,8 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
         ? reflector.get<(string | string[])[]>(AUTHORIZED, classTarget)
         : [];
       if (
-        (typeof classRoles === 'undefined' || classRoles === null) &&
-        (typeof handlerRoles === 'undefined' || handlerRoles === null)
+        (typeof classRoles === "undefined" || classRoles === null) &&
+        (typeof handlerRoles === "undefined" || handlerRoles === null)
       ) {
         return undefined;
       }
@@ -98,7 +98,7 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
     async function canActivate(context: GraphqlCtx): Promise<boolean> {
       const isPublic = getIsPublic(context);
       const roles = getRoles(context);
-      if (isPublic || typeof roles === 'undefined') return true;
+      if (isPublic || typeof roles === "undefined") return true;
       const keycloakService = new KeycloakService(
         options,
         keycloak,
@@ -110,9 +110,9 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
       const resource = getResource(context);
       logger.verbose(
         `resource${
-          resource ? ` '${resource}'` : ''
+          resource ? ` '${resource}'` : ""
         } for '${username}' requires ${
-          roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
+          roles.length ? `roles [ ${roles.join(" | ")} ]` : "authentication"
         }`
       );
       if (await keycloakService.isAuthorizedByRoles(roles)) {
@@ -128,14 +128,14 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
         context,
         async ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
           if (!(await canActivate(context))) {
-            throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+            throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
           }
           return next();
         }
       );
       return next();
     };
-  }
+  },
 };
 
 export default AuthGuardProvider;

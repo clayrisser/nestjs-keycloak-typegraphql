@@ -22,13 +22,13 @@
  * limitations under the License.
  */
 
-import { FactoryProvider } from '@nestjs/common';
-import { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
-import { AUTH_GUARD } from './authGuard.provider';
-import { GraphqlCtx } from './types';
-import { RESOURCE_GUARD } from './resourceGuard.provider';
+import { FactoryProvider } from "@nestjs/common";
+import { MiddlewareFn, NextFn, ResolverData } from "type-graphql";
+import { AUTH_GUARD } from "./authGuard.provider";
+import { GraphqlCtx } from "./types";
+import { RESOURCE_GUARD } from "./resourceGuard.provider";
 
-export const MIDDLEWARES = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_MIDDLEWARES';
+export const MIDDLEWARES = "NESTJS_KEYCLOAK_TYPEGRAPHQL_MIDDLEWARES";
 
 const MiddlewaresProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>[]> = {
   provide: MIDDLEWARES,
@@ -39,8 +39,8 @@ const MiddlewaresProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>[]> = {
     },
     (data: ResolverData, next: NextFn) => {
       return AuthGuard(data, next);
-    }
-  ]
+    },
+  ],
 };
 
 export default MiddlewaresProvider;

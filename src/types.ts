@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 19:16:13
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 21-07-2021 03:27:51
+ * Last Modified: 06-05-2022 04:29:06
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -22,20 +22,20 @@
  * limitations under the License.
  */
 
-import Token from 'keycloak-connect/middleware/auth-utils/token';
-import { ApiProperty } from '@nestjs/swagger';
-import { KeycloakContext } from 'keycloak-connect-graphql';
-import { KeycloakService, KeycloakRequest } from 'nestjs-keycloak';
-import { ModuleMetadata } from '@nestjs/common/interfaces';
-import { RequiredActionAlias } from 'keycloak-admin/lib/defs/requiredActionProviderRepresentation';
+import Token from "keycloak-connect/middleware/auth-utils/token";
+import { ApiProperty } from "@nestjs/swagger";
+import { KeycloakContext } from "keycloak-connect-graphql";
+import { KeycloakService, KeycloakRequest } from "@risserlabs/nestjs-keycloak";
+import { ModuleMetadata } from "@nestjs/common/interfaces";
+import { RequiredActionAlias } from "keycloak-admin/lib/defs/requiredActionProviderRepresentation";
 import {
   Field,
   MiddlewareFn,
   ObjectType,
-  registerEnumType
-} from 'type-graphql';
-import { Request } from 'express';
-import { Type } from '@nestjs/common';
+  registerEnumType,
+} from "type-graphql";
+import { Request } from "express";
+import { Type } from "@nestjs/common";
 
 export interface HashMap<T = any> {
   [key: string]: T;
@@ -58,7 +58,7 @@ export interface GraphqlCtx extends HashMap {
 export interface KeycloakTypegraphqlOptions {}
 
 export interface KeycloakTypegraphqlAsyncOptions
-  extends Pick<ModuleMetadata, 'imports'> {
+  extends Pick<ModuleMetadata, "imports"> {
   inject?: any[];
   useFactory?: (
     ...args: any[]
@@ -66,9 +66,9 @@ export interface KeycloakTypegraphqlAsyncOptions
 }
 
 export enum GqlBufferType {
-  Buffer = 'Buffer'
+  Buffer = "Buffer",
 }
-registerEnumType(GqlBufferType, { name: 'GqlBufferType' });
+registerEnumType(GqlBufferType, { name: "GqlBufferType" });
 
 @ObjectType()
 export class GqlBuffer {
@@ -459,4 +459,4 @@ export class User {
   username?: string;
 }
 
-export const KEYCLOAK_TYPEGRAPHQL_OPTIONS = 'KEYCLOAK_TYPEGRAPHQL_OPTIONS';
+export const KEYCLOAK_TYPEGRAPHQL_OPTIONS = "KEYCLOAK_TYPEGRAPHQL_OPTIONS";

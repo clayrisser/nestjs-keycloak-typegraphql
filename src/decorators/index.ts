@@ -22,10 +22,10 @@
  * limitations under the License.
  */
 
-import DecorateAll from './decorateAll.decorator';
-import Guards from './guards.decorator';
-import RegisterClass from './registerClass.decorator';
-import RegisterHandler from './registerHandler.decorator';
-import { Resolver } from './resolver.decorator';
+import DecorateAll from "./decorateAll.decorator";
+import Guards from "./guards.decorator";
+import RegisterClass from "./registerClass.decorator";
+import RegisterHandler from "./registerHandler.decorator";
+import { Resolver } from "./resolver.decorator";
 
 export { DecorateAll, RegisterClass, RegisterHandler, Resolver, Guards };

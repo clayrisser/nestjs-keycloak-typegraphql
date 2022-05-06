@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-07-2021 03:11:21
+ * Last Modified: 06-05-2022 04:30:47
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,30 +22,30 @@
  * limitations under the License.
  */
 
-import { HttpService } from '@nestjs/axios';
-import { Keycloak } from 'keycloak-connect';
-import { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
-import { Reflector } from '@nestjs/core';
+import { HttpService } from "@nestjs/axios";
+import { Keycloak } from "keycloak-connect";
+import { MiddlewareFn, NextFn, ResolverData } from "type-graphql";
+import { Reflector } from "@nestjs/core";
 import {
   FactoryProvider,
   HttpException,
   HttpStatus,
   Logger,
-  Type
-} from '@nestjs/common';
+  Type,
+} from "@nestjs/common";
 import {
   KEYCLOAK,
   KEYCLOAK_OPTIONS,
   KeycloakOptions,
   KeycloakService,
   RESOURCE,
-  SCOPES
-} from 'nestjs-keycloak';
-import deferMiddleware from './deferMiddleware';
-import { GraphqlCtx } from './types';
+  SCOPES,
+} from "@risserlabs/nestjs-keycloak";
+import deferMiddleware from "./deferMiddleware";
+import { GraphqlCtx } from "./types";
 
-const logger = new Logger('ResourceGuard');
-export const RESOURCE_GUARD = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_RESOURCE_GUARD';
+const logger = new Logger("ResourceGuard");
+export const RESOURCE_GUARD = "NESTJS_KEYCLOAK_TYPEGRAPHQL_RESOURCE_GUARD";
 
 const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
   provide: RESOURCE_GUARD,
@@ -93,7 +93,7 @@ const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
       const username = (await keycloakService.getUserInfo())?.preferredUsername;
       if (!username) return false;
       logger.verbose(
-        `protecting resource '${resource}' with scopes [ ${scopes.join(', ')} ]`
+        `protecting resource '${resource}' with scopes [ ${scopes.join(", ")} ]`
       );
       const permissions = scopes.map((scope) => `${resource}:${scope}`);
       if (await keycloakService.enforce(permissions)) {
@@ -109,14 +109,14 @@ const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
         context,
         async ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
           if (!(await canActivate(context))) {
-            throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+            throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
           }
           return next();
         }
       );
       return next();
     };
-  }
+  },
 };
 
 export default ResourceGuardProvider;
