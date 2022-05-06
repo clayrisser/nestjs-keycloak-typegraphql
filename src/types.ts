@@ -4,7 +4,7 @@
  * File Created: 17-07-2021 19:16:13
  * Author: Clay Risser <clayrisser@gmail.com>
  * -----
- * Last Modified: 06-05-2022 04:29:06
+ * Last Modified: 06-05-2022 05:34:19
  * Modified By: Clay Risser <clayrisser@gmail.com>
  * -----
  * Clay Risser (c) Copyright 2021
@@ -27,7 +27,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { KeycloakContext } from "keycloak-connect-graphql";
 import { KeycloakService, KeycloakRequest } from "@risserlabs/nestjs-keycloak";
 import { ModuleMetadata } from "@nestjs/common/interfaces";
-import { RequiredActionAlias } from "keycloak-admin/lib/defs/requiredActionProviderRepresentation";
+import { RequiredActionAlias } from "@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation";
 import {
   Field,
   MiddlewareFn,

@@ -1,7 +1,7 @@
 {
   "name": "@risserlabs/nestjs-keycloak-typegraphql",
   "description": "nestjs module for authenticating typegraphql with keycloak",
-  "version": "2.0.0-rc.53",
+  "version": "2.0.0-rc.54",
   "sideEffects": false,
   "license": "Apache-2.0",
   "keywords": [
@@ -63,8 +63,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.17.9",
+    "@keycloak/keycloak-admin-client": "^18.0.0",
     "core-js": "^3.22.4",
-    "keycloak-admin": "^1.14.22",
     "keycloak-connect": "^18.0.0",
     "keycloak-connect-graphql": "^0.7.0",
     "reflect-metadata": "^0.1.13"
@@ -94,7 +94,7 @@
     "@nestjs/common": "^8.4.4",
     "@nestjs/core": "^8.4.4",
     "@nestjs/swagger": "^5.2.1",
-    "@risserlabs/nestjs-keycloak": "^2.2.0",
+    "@risserlabs/nestjs-keycloak": "^2.2.6",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.5.0",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
@@ -112,7 +112,7 @@
     "eslint-plugin-spellcheck": "^0.0.19",
     "express": "^4.18.1",
     "graphql": "^15.8.0",
-    "jest": "^28.0.3",
+    "jest": "^28.1.0",
     "jest-sonar-reporter": "^2.0.0",
     "lockfile-lint": "^4.7.4",
     "prettier": "^2.6.2",
