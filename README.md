@@ -12,7 +12,7 @@ npm install --save nestjs-keycloak-typegraphql
 
 ## Notes
 
-Must use AuthGuard instead of AuthChecker because getHandler() is not available to the auth checker.  The reason it is available to the AuthGuard is because the middleware for the guard is deferred.
+Must use AuthGuard instead of AuthChecker because getHandler() and getClass() from the context (under context.typegraphqlMetadata) is not available to the auth checker.  The reason it is available to the AuthGuard is because the middleware for the guard is deferred.
 
 ## Support
 
