@@ -1,13 +1,13 @@
 /**
  * File: /src/decorators/registerClass.decorator.ts
- * Project: nestjs-keycloak-typegraphql
- * File Created: 19-07-2021 18:42:26
- * Author: Clay Risser <clayrisser@gmail.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 21-07-2021 03:10:08
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:16:23
+ * Modified By: Clay Risser
  * -----
- * Clay Risser (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,19 +22,18 @@
  * limitations under the License.
  */
 
-import { createMethodDecorator, ResolverData, NextFn } from "type-graphql";
-import DecorateAll from "./decorateAll.decorator";
-import { GraphqlCtx } from "../types";
+import type { ResolverData, NextFn } from 'type-graphql';
+import { createMethodDecorator } from 'type-graphql';
+import DecorateAll from './decorateAll.decorator';
+import type { GraphqlCtx } from '../types';
 
 export default function RegisterClass(target: any): void | Function {
   if (!target.prototype) return undefined;
   return DecorateAll(
-    createMethodDecorator(
-      ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
-        if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
-        context.typegraphqlMeta.getClass = () => target;
-        return next();
-      }
-    )
+    createMethodDecorator(({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
+      if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
+      context.typegraphqlMeta.getClass = () => target;
+      return next();
+    }),
   )(target);
 }

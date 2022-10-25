@@ -1,13 +1,13 @@
 /**
  * File: /src/wrapContext.provider.ts
- * Project: nestjs-keycloak
- * File Created: 16-07-2021 19:45:17
- * Author: Clay Risser <email@clayrisser.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 06-05-2022 04:29:54
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:23:34
+ * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,41 +22,25 @@
  * limitations under the License.
  */
 
-import { FactoryProvider } from "@nestjs/common";
-import { HttpService } from "@nestjs/axios";
-import { Keycloak } from "keycloak-connect";
-import { KeycloakContext } from "keycloak-connect-graphql";
-import {
-  KEYCLOAK,
-  KEYCLOAK_OPTIONS,
-  KeycloakOptions,
-  KeycloakService,
-} from "@risserlabs/nestjs-keycloak";
-import { GraphqlCtx, HashMap } from "./types";
+import type { FactoryProvider } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import type { Keycloak } from 'keycloak-connect';
+import { KeycloakContext } from 'keycloak-connect-graphql';
+import type { KeycloakOptions } from '@risserlabs/nestjs-keycloak';
+import { KEYCLOAK, KEYCLOAK_OPTIONS, KeycloakService } from '@risserlabs/nestjs-keycloak';
+import type { GraphqlCtx, HashMap } from './types';
 
-export const WRAP_CONTEXT = "NESTJS_KEYCLOAK_TYPEGRAPHQL_WRAP_CONTEXT";
+export const WRAP_CONTEXT = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_WRAP_CONTEXT';
 
 const WrapContextProvider: FactoryProvider<GraphqlCtx> = {
   provide: WRAP_CONTEXT,
   inject: [KEYCLOAK_OPTIONS, KEYCLOAK, HttpService],
-  useFactory: (
-    options: KeycloakOptions,
-    keycloak: Keycloak,
-    httpService: HttpService
-  ) => {
+  useFactory: (options: KeycloakOptions, keycloak: Keycloak, httpService: HttpService) => {
     return (context: HashMap) => {
       const graphqlContext: GraphqlCtx = context;
-      graphqlContext.kauth = new KeycloakContext(
-        { req: context.req },
-        keycloak
-      );
+      graphqlContext.kauth = new KeycloakContext({ req: context.req }, keycloak);
       graphqlContext.typegraphqlMeta = {};
-      graphqlContext.keycloakService = new KeycloakService(
-        options,
-        keycloak,
-        httpService,
-        graphqlContext
-      );
+      graphqlContext.keycloakService = new KeycloakService(options, keycloak, httpService, graphqlContext);
       return graphqlContext;
     };
   },

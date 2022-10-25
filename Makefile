@@ -1,12 +1,12 @@
 # File: /Makefile
-# Project: nestjs-keycloak-typegraphql
-# File Created: 06-05-2022 04:19:04
-# Author: Clay Risser <clayrisser@gmail.com>
+# Project: nestjs-axios-logger
+# File Created: 23-10-2022 05:07:14
+# Author: Risser Labs LLC <info@risserlabs.com>
 # -----
-# Last Modified: 06-05-2022 04:42:48
-# Modified By: Clay Risser <clayrisser@gmail.com>
+# Last Modified: 25-10-2022 13:58:46
+# Modified By: Clay Risser
 # -----
-# Clay Risser (c) Copyright 2021 - 2022
+# Risser Labs LLC (c) Copyright 2021 - 2022
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,19 @@ include $(MKPM)/mkchain
 include $(MKPM)/yarn
 include $(MKPM)/envcache
 include $(MKPM)/dotenv
-include config.mk
+
+export BABEL ?= $(call yarn_binary,babel)
+export BABEL_NODE ?= $(call yarn_binary,babel-node)
+export BROWSERSLIST_BINARY ?= $(call yarn_binary,browserslist)
+export CLOC ?= cloc
+export CSPELL ?= $(call yarn_binary,cspell)
+export ESLINT ?= $(call yarn_binary,eslint)
+export JEST ?= $(call yarn_binary,jest)
+export PRETTIER ?= $(call yarn_binary,prettier)
+export TSC ?= $(call yarn_binary,tsc)
+
+export NPM_AUTH_TOKEN ?= $(shell $(CAT) $(HOME)/.docker/config.json 2>$(NULL) | \
+	$(JQ) -r '.auths["registry.gitlab.com"].auth' | $(BASE64_NOWRAP) -d | $(CUT) -d':' -f2)
 
 ACTIONS += install
 $(ACTION)/install: package.json
@@ -51,6 +63,7 @@ $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 
 ACTIONS += test~lint ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
+	-@$(MKDIR) -p node_modules/.tmp
 	-@$(call jest,$?,$(ARGS))
 	@$(call done,test)
 
@@ -59,15 +72,15 @@ BUILD_TARGET := lib/index.js
 lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(BABEL) --env-name umd src -d lib --extensions '.js,.jsx,.ts,.tsx' --source-maps
-	@$(BABEL) --env-name esm src -d es --extensions '.js,.jsx,.ts,.tsx' --source-maps
+	@$(BABEL) --env-name esm src -d lib --extensions '.js,.jsx,.ts,.tsx' --source-maps
+	@$(ECHO) '{"type": "module"}' > lib/package.json
 	@$(TSC) -p tsconfig.build.json -d
 	@$(call done,build)
 
-.PHONY: publish +publish
-publish: | ~build +publish
-+publish:
-	@npm publish $(ARGS)
+# .PHONY: start +start
+# start: | ~install +start ##
+# +start:
+# 	@$(NODEMON) --exec $(BABEL_NODE) --extensions .ts src/main.ts $(ARGS)
 
 COLLECT_COVERAGE_FROM := ["src/**/*.{js,jsx,ts,tsx}"]
 .PHONY: coverage +coverage
@@ -78,17 +91,26 @@ coverage: | ~lint +coverage
 .PHONY: prepare
 prepare: ;
 
+.PHONY: browserslist
+browserslist:
+	@$(BROWSERSLIST_BINARY)
+
 .PHONY: upgrade
 upgrade:
-	@$(NPM) upgrade-interactive
+	@$(YARN) upgrade-interactive
 
 .PHONY: inc
 inc:
-	@npm version patch --git=false $(NOFAIL)
+	@$(NPM) version patch --git=false $(NOFAIL)
 
 .PHONY: count
 count:
 	@$(CLOC) $(shell $(GIT) ls-files)
+
+.PHONY: publish +publish
+publish: | ~build +publish ##
++publish:
+	@$(NPM) publish --access=public
 
 .PHONY: clean
 clean: ##
@@ -100,5 +122,15 @@ clean: ##
 		$(NOFAIL)
 
 -include $(call actions)
+
+export CACHE_ENVS += \
+	BABEL \
+	BABEL_NODE \
+	CLOC \
+	CSPELL \
+	ESLINT \
+	JEST \
+	PRETTIER \
+	TSC
 
 endif

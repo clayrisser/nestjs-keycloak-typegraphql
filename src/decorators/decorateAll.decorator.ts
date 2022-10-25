@@ -1,57 +1,41 @@
 /**
  * File: /src/decorators/decorateAll.decorator.ts
- * Project: nestjs-keycloak-typegraphql
- * File Created: 17-07-2021 20:14:37
- * Author: Clay Risser <clayrisser@gmail.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 20-07-2021 14:00:53
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:16:06
+ * Modified By: Clay Risser
  * -----
- * https://github.com/Papooch/decorate-all/blob/main/src/lib/decorate-all.decorator.ts
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
- * MIT License
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Copyright (c) 2021 Papooch
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-export default function DecorateAll(
-  decorator: MethodDecorator,
-  options: { exclude?: string[]; deep?: boolean } = {}
-) {
+export default function DecorateAll(decorator: MethodDecorator, options: { exclude?: string[]; deep?: boolean } = {}) {
   return (target: any) => {
     let descriptors = Object.getOwnPropertyDescriptors(target.prototype);
     if (options.deep) {
       let base = Object.getPrototypeOf(target);
       while (base.prototype) {
-        const baseDescriptors = Object.getOwnPropertyDescriptors(
-          base.prototype
-        );
+        const baseDescriptors = Object.getOwnPropertyDescriptors(base.prototype);
         descriptors = { ...baseDescriptors, ...descriptors };
         base = Object.getPrototypeOf(base);
       }
     }
     // eslint-disable-next-line no-restricted-syntax
     for (const [propName, descriptor] of Object.entries(descriptors)) {
-      const isMethod =
-        typeof descriptor.value === "function" && propName !== "constructor";
+      const isMethod = typeof descriptor.value === 'function' && propName !== 'constructor';
       // eslint-disable-next-line no-continue
       if (options.exclude?.includes(propName)) continue;
       // eslint-disable-next-line no-continue

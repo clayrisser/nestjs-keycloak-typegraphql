@@ -1,13 +1,13 @@
 /**
  * File: /src/decorators/index.ts
- * Project: nestjs-keycloak
- * File Created: 15-07-2021 22:27:15
- * Author: Clay Risser <email@clayrisser.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 25-07-2021 04:46:17
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:16:16
+ * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@
  * limitations under the License.
  */
 
-import DecorateAll from "./decorateAll.decorator";
-import Guards from "./guards.decorator";
-import RegisterClass from "./registerClass.decorator";
-import RegisterHandler from "./registerHandler.decorator";
-import { Resolver } from "./resolver.decorator";
+import DecorateAll from './decorateAll.decorator';
+import Guards from './guards.decorator';
+import RegisterClass from './registerClass.decorator';
+import RegisterHandler from './registerHandler.decorator';
+import { Resolver } from './resolver.decorator';
 
 export { DecorateAll, RegisterClass, RegisterHandler, Resolver, Guards };

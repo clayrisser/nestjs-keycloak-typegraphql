@@ -18,7 +18,7 @@ npm install --save nestjs-keycloak-typegraphql
 
 if keycloak keycloakAttribute not provided, then it checks the user id.
 
-examples 
+examples
 
 ```
 @Owned() // checking userId on response
@@ -34,11 +34,11 @@ examples
 
 ## Notes
 
-Must use AuthGuard instead of AuthChecker because getHandler() and getClass() from the context (under context.typegraphqlMetadata) is not available to the auth checker.  The reason it is available to the AuthGuard is because the middleware for the guard is deferred.
+Must use AuthGuard instead of AuthChecker because getHandler() and getClass() from the context (under context.typegraphqlMetadata) is not available to the auth checker. The reason it is available to the AuthGuard is because the middleware for the guard is deferred.
 
 ## Support
 
-Submit an [issue](https://github.com/clayrisser/nestjs-keycloak-typegraphql/issues/new)
+Submit an [issue](https://gitlab.com/clayrisser/nestjs-keycloak-typegraphql/issues/new)
 
 ## License
 

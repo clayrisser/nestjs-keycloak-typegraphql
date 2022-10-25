@@ -1,13 +1,13 @@
 /**
  * File: /src/@types/keycloakConnectToken.d.ts
- * Project: nestjs-keycloak
- * File Created: 14-07-2021 11:43:59
- * Author: Clay Risser <email@clayrisser.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 21-07-2021 03:30:08
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:16:02
+ * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-declare module "keycloak-connect/middleware/auth-utils/token" {
+declare module 'keycloak-connect/middleware/auth-utils/token' {
   namespace Token {
     interface TokenContentRealmAccess {
       roles: string[];
@@ -48,7 +48,7 @@ declare module "keycloak-connect/middleware/auth-utils/token" {
     type ResourceAccess = HashMap<ResourceAccessItem>;
 
     interface TokenContent {
-      "allowed-origins"?: string[];
+      'allowed-origins'?: string[];
       acr?: string;
       azp?: string;
       email_verified?: boolean;

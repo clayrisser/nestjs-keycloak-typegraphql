@@ -1,13 +1,13 @@
 /**
  * File: /src/middlewares.provider.ts
- * Project: nestjs-keycloak
- * File Created: 15-07-2021 21:45:29
- * Author: Clay Risser <email@clayrisser.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 21-07-2021 03:09:36
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:17:18
+ * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@
  * limitations under the License.
  */
 
-import { FactoryProvider } from "@nestjs/common";
-import { MiddlewareFn, NextFn, ResolverData } from "type-graphql";
-import { AUTH_GUARD } from "./authGuard.provider";
-import { GraphqlCtx } from "./types";
-import { RESOURCE_GUARD } from "./resourceGuard.provider";
+import type { FactoryProvider } from '@nestjs/common';
+import type { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
+import { AUTH_GUARD } from './authGuard.provider';
+import type { GraphqlCtx } from './types';
+import { RESOURCE_GUARD } from './resourceGuard.provider';
 
-export const MIDDLEWARES = "NESTJS_KEYCLOAK_TYPEGRAPHQL_MIDDLEWARES";
+export const MIDDLEWARES = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_MIDDLEWARES';
 
 const MiddlewaresProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>[]> = {
   provide: MIDDLEWARES,

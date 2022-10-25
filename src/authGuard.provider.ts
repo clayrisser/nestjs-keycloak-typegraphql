@@ -1,13 +1,13 @@
 /**
  * File: /src/authGuard.provider.ts
- * Project: nestjs-keycloak
- * File Created: 15-07-2021 21:45:29
- * Author: Clay Risser <email@clayrisser.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 06-05-2022 04:29:44
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:17:42
+ * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,41 +22,24 @@
  * limitations under the License.
  */
 
-import { HttpService } from "@nestjs/axios";
-import { Keycloak } from "keycloak-connect";
-import { MiddlewareFn, NextFn, ResolverData } from "type-graphql";
-import { Reflector } from "@nestjs/core";
-import {
-  FactoryProvider,
-  HttpException,
-  HttpStatus,
-  Logger,
-  Type,
-} from "@nestjs/common";
-import {
-  AUTHORIZED,
-  KEYCLOAK,
-  KEYCLOAK_OPTIONS,
-  KeycloakOptions,
-  KeycloakService,
-  PUBLIC,
-  RESOURCE,
-} from "@risserlabs/nestjs-keycloak";
-import deferMiddleware from "./deferMiddleware";
-import { GraphqlCtx } from "./types";
+import { HttpService } from '@nestjs/axios';
+import type { Keycloak } from 'keycloak-connect';
+import type { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
+import { Reflector } from '@nestjs/core';
+import type { FactoryProvider, Type } from '@nestjs/common';
+import { HttpException, HttpStatus, Logger } from '@nestjs/common';
+import type { KeycloakOptions } from '@risserlabs/nestjs-keycloak';
+import { AUTHORIZED, KEYCLOAK, KEYCLOAK_OPTIONS, KeycloakService, PUBLIC, RESOURCE } from '@risserlabs/nestjs-keycloak';
+import deferMiddleware from './deferMiddleware';
+import type { GraphqlCtx } from './types';
 
-const logger = new Logger("AuthGuard");
-export const AUTH_GUARD = "NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_GUARD";
+const logger = new Logger('AuthGuard');
+export const AUTH_GUARD = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_GUARD';
 
 const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
   provide: AUTH_GUARD,
   inject: [KEYCLOAK_OPTIONS, KEYCLOAK, HttpService, Reflector],
-  useFactory: (
-    options: KeycloakOptions,
-    keycloak: Keycloak,
-    httpService: HttpService,
-    reflector: Reflector
-  ) => {
+  useFactory: (options: KeycloakOptions, keycloak: Keycloak, httpService: HttpService, reflector: Reflector) => {
     function getResource(context: GraphqlCtx): string | null {
       const { getClass } = context.typegraphqlMeta || {};
       if (!getClass) return null;
@@ -71,15 +54,11 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
       let handlerTarget: Function | null = null;
       if (getClass) classTarget = getClass();
       if (getHandler) handlerTarget = getHandler();
-      const handlerRoles = handlerTarget
-        ? reflector.get<(string | string[])[]>(AUTHORIZED, handlerTarget)
-        : [];
-      const classRoles = classTarget
-        ? reflector.get<(string | string[])[]>(AUTHORIZED, classTarget)
-        : [];
+      const handlerRoles = handlerTarget ? reflector.get<(string | string[])[]>(AUTHORIZED, handlerTarget) : [];
+      const classRoles = classTarget ? reflector.get<(string | string[])[]>(AUTHORIZED, classTarget) : [];
       if (
-        (typeof classRoles === "undefined" || classRoles === null) &&
-        (typeof handlerRoles === "undefined" || handlerRoles === null)
+        (typeof classRoles === 'undefined' || classRoles === null) &&
+        (typeof handlerRoles === 'undefined' || handlerRoles === null)
       ) {
         return undefined;
       }
@@ -90,30 +69,21 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
       const { getHandler } = context.typegraphqlMeta || {};
       let handlerTarget: Function | null = null;
       if (getHandler) handlerTarget = getHandler();
-      return handlerTarget
-        ? !!reflector.get<boolean>(PUBLIC, handlerTarget)
-        : false;
+      return handlerTarget ? !!reflector.get<boolean>(PUBLIC, handlerTarget) : false;
     }
 
     async function canActivate(context: GraphqlCtx): Promise<boolean> {
       const isPublic = getIsPublic(context);
       const roles = getRoles(context);
-      if (isPublic || typeof roles === "undefined") return true;
-      const keycloakService = new KeycloakService(
-        options,
-        keycloak,
-        httpService,
-        context
-      );
+      if (isPublic || typeof roles === 'undefined') return true;
+      const keycloakService = new KeycloakService(options, keycloak, httpService, context);
       const username = (await keycloakService.getUserInfo())?.preferredUsername;
       if (!username) return false;
       const resource = getResource(context);
       logger.verbose(
-        `resource${
-          resource ? ` '${resource}'` : ""
-        } for '${username}' requires ${
-          roles.length ? `roles [ ${roles.join(" | ")} ]` : "authentication"
-        }`
+        `resource${resource ? ` '${resource}'` : ''} for '${username}' requires ${
+          roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
+        }`,
       );
       if (await keycloakService.isAuthorizedByRoles(roles)) {
         logger.verbose(`authorization for '${username}' granted`);
@@ -124,15 +94,12 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
     }
 
     return ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
-      deferMiddleware(
-        context,
-        async ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
-          if (!(await canActivate(context))) {
-            throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
-          }
-          return next();
+      deferMiddleware(context, async ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
+        if (!(await canActivate(context))) {
+          throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
         }
-      );
+        return next();
+      });
       return next();
     };
   },

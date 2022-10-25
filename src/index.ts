@@ -1,13 +1,13 @@
 /**
  * File: /src/index.ts
- * Project: nestjs-keycloak
- * File Created: 15-07-2021 21:45:24
- * Author: Clay Risser <email@clayrisser.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 21-07-2021 03:33:12
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:17:34
+ * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,18 +22,16 @@
  * limitations under the License.
  */
 
-import { DynamicModule, Global, Logger, Module } from "@nestjs/common";
-import { HttpModule } from "@nestjs/axios";
-import AuthCheckerProvider from "./authChecker.provider";
-import AuthGuardProvider from "./authGuard.provider";
-import MiddlewaresProvider from "./middlewares.provider";
-import ResourceGuardProvider from "./resourceGuard.provider";
-import WrapContextProvider from "./wrapContext.provider";
-import {
-  KeycloakTypegraphqlOptions,
-  KeycloakTypegraphqlAsyncOptions,
-  KEYCLOAK_TYPEGRAPHQL_OPTIONS,
-} from "./types";
+import type { DynamicModule } from '@nestjs/common';
+import { Global, Logger, Module } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
+import AuthCheckerProvider from './authChecker.provider';
+import AuthGuardProvider from './authGuard.provider';
+import MiddlewaresProvider from './middlewares.provider';
+import ResourceGuardProvider from './resourceGuard.provider';
+import WrapContextProvider from './wrapContext.provider';
+import type { KeycloakTypegraphqlOptions, KeycloakTypegraphqlAsyncOptions } from './types';
+import { KEYCLOAK_TYPEGRAPHQL_OPTIONS } from './types';
 
 @Global()
 @Module({})
@@ -69,9 +67,7 @@ export default class KeycloakModule {
     };
   }
 
-  public static registerAsync(
-    asyncOptions: KeycloakTypegraphqlAsyncOptions
-  ): DynamicModule {
+  public static registerAsync(asyncOptions: KeycloakTypegraphqlAsyncOptions): DynamicModule {
     return {
       module: KeycloakModule,
       global: true,
@@ -95,9 +91,7 @@ export default class KeycloakModule {
     };
   }
 
-  private static createOptionsProvider(
-    asyncOptions: KeycloakTypegraphqlAsyncOptions
-  ) {
+  private static createOptionsProvider(asyncOptions: KeycloakTypegraphqlAsyncOptions) {
     if (!asyncOptions.useFactory) {
       throw new Error("registerAsync must have 'useFactory'");
     }
@@ -111,11 +105,11 @@ export default class KeycloakModule {
 
 export { AuthCheckerProvider, ResourceGuardProvider, WrapContextProvider };
 
-export * from "./authChecker.provider";
-export * from "./authGuard.provider";
-export * from "./decorators";
-export * from "./deferMiddleware";
-export * from "./middlewares.provider";
-export * from "./resourceGuard.provider";
-export * from "./types";
-export * from "./wrapContext.provider";
+export * from './authChecker.provider';
+export * from './authGuard.provider';
+export * from './decorators';
+export * from './deferMiddleware';
+export * from './middlewares.provider';
+export * from './resourceGuard.provider';
+export * from './types';
+export * from './wrapContext.provider';

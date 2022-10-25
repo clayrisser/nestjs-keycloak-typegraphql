@@ -1,13 +1,13 @@
 /**
  * File: /src/decorators/resolver.decorator.ts
- * Project: nestjs-keycloak-typegraphql
- * File Created: 19-07-2021 18:40:53
- * Author: Clay Risser <clayrisser@gmail.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 25-07-2021 04:49:46
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:22:17
+ * Modified By: Clay Risser
  * -----
- * Clay Risser (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,30 +22,20 @@
  * limitations under the License.
  */
 
-import { ClassType, Resolver as TypeGraphqlResolver } from "type-graphql";
-import { applyDecorators } from "@nestjs/common";
-import {
-  ClassTypeResolver,
-  AbstractClassOptions,
-} from "type-graphql/dist/decorators/types";
-import Guards from "./guards.decorator";
+import type { ClassType } from 'type-graphql';
+import { Resolver as TypeGraphqlResolver } from 'type-graphql';
+import { applyDecorators } from '@nestjs/common';
+import type { ClassTypeResolver, AbstractClassOptions } from 'type-graphql/dist/decorators/types';
+import Guards from './guards.decorator';
 
-export function Resolver(): ClassDecorator;
-export function Resolver(options: AbstractClassOptions): ClassDecorator;
+export function Resolver(options?: AbstractClassOptions): ClassDecorator;
 export function Resolver(
-  typeFunc: ClassTypeResolver,
-  options?: AbstractClassOptions
-): ClassDecorator;
-export function Resolver(
-  objectType: ClassType,
-  options?: AbstractClassOptions
+  typeFuncOrObjectType: ClassTypeResolver | ClassType,
+  options?: AbstractClassOptions,
 ): ClassDecorator;
 export function Resolver(
   objectTypeOrTypeFuncOrMaybeOptions?: any,
-  maybeOptions?: AbstractClassOptions
+  maybeOptions?: AbstractClassOptions,
 ): ClassDecorator {
-  return applyDecorators(
-    Guards(),
-    TypeGraphqlResolver(objectTypeOrTypeFuncOrMaybeOptions, maybeOptions)
-  );
+  return applyDecorators(Guards(), TypeGraphqlResolver(objectTypeOrTypeFuncOrMaybeOptions, maybeOptions));
 }

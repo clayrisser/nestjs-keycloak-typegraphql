@@ -1,13 +1,13 @@
 /**
  * File: /src/decorators/guards.decorator.ts
- * Project: nestjs-keycloak-typegraphql
- * File Created: 19-07-2021 18:40:53
- * Author: Clay Risser <clayrisser@gmail.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 25-07-2021 04:49:06
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:18:06
+ * Modified By: Clay Risser
  * -----
- * Clay Risser (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,14 @@
  * limitations under the License.
  */
 
-import { applyDecorators } from "@nestjs/common";
-import { NextFn, ResolverData, createMethodDecorator } from "type-graphql";
-import DecorateAll from "./decorateAll.decorator";
-import RegisterClass from "./registerClass.decorator";
-import RegisterHandler from "./registerHandler.decorator";
-import { GraphqlCtx } from "../types";
-import { combineMiddlewares } from "../deferMiddleware";
+import type { NextFn, ResolverData } from 'type-graphql';
+import { applyDecorators } from '@nestjs/common';
+import { createMethodDecorator } from 'type-graphql';
+import DecorateAll from './decorateAll.decorator';
+import RegisterClass from './registerClass.decorator';
+import RegisterHandler from './registerHandler.decorator';
+import type { GraphqlCtx } from '../types';
+import { combineMiddlewares } from '../deferMiddleware';
 
 export default function Guards(): ClassDecorator {
   return applyDecorators(
@@ -38,13 +39,10 @@ export default function Guards(): ClassDecorator {
         if (!context.typegraphqlMeta?.deferredMiddlewares?.length) {
           return next();
         }
-        return combineMiddlewares(context.typegraphqlMeta.deferredMiddlewares)(
-          data,
-          next
-        );
-      })
+        return combineMiddlewares(context.typegraphqlMeta.deferredMiddlewares)(data, next);
+      }),
     ),
     DecorateAll(RegisterHandler),
-    RegisterClass
+    RegisterClass,
   );
 }

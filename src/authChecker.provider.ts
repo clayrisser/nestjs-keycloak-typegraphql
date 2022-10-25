@@ -1,13 +1,13 @@
 /**
  * File: /src/authChecker.provider.ts
- * Project: nestjs-keycloak
- * File Created: 15-07-2021 21:45:29
- * Author: Clay Risser <email@clayrisser.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 06-05-2022 04:30:39
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:16:41
+ * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,33 +22,23 @@
  * limitations under the License.
  */
 
-import { AuthChecker, ResolverData } from "type-graphql";
-import { HttpService } from "@nestjs/axios";
-import { Keycloak } from "keycloak-connect";
-import { Logger, FactoryProvider } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import {
-  KEYCLOAK,
-  KEYCLOAK_OPTIONS,
-  KeycloakOptions,
-  KeycloakService,
-  PUBLIC,
-  RESOURCE,
-} from "@risserlabs/nestjs-keycloak";
-import { GraphqlCtx } from "./types";
+import type { AuthChecker, ResolverData } from 'type-graphql';
+import { HttpService } from '@nestjs/axios';
+import type { Keycloak } from 'keycloak-connect';
+import type { FactoryProvider } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import type { KeycloakOptions } from '@risserlabs/nestjs-keycloak';
+import { KEYCLOAK, KEYCLOAK_OPTIONS, KeycloakService, PUBLIC, RESOURCE } from '@risserlabs/nestjs-keycloak';
+import type { GraphqlCtx } from './types';
 
-const logger = new Logger("AuthChecker");
-export const AUTH_CHECKER = "NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_CHECKER";
+const logger = new Logger('AuthChecker');
+export const AUTH_CHECKER = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_CHECKER';
 
 const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
   provide: AUTH_CHECKER,
   inject: [KEYCLOAK_OPTIONS, KEYCLOAK, HttpService, Reflector],
-  useFactory: (
-    options: KeycloakOptions,
-    keycloak: Keycloak,
-    httpService: HttpService,
-    reflector: Reflector
-  ) => {
+  useFactory: (options: KeycloakOptions, keycloak: Keycloak, httpService: HttpService, reflector: Reflector) => {
     function getResource(context: GraphqlCtx): string | null {
       const { getClass } = context.typegraphqlMeta || {};
       if (!getClass) return null;
@@ -61,32 +51,20 @@ const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
       const { getHandler } = context.typegraphqlMeta || {};
       let handlerTarget: Function | null = null;
       if (getHandler) handlerTarget = getHandler();
-      return handlerTarget
-        ? !!reflector.get<boolean>(PUBLIC, handlerTarget)
-        : false;
+      return handlerTarget ? !!reflector.get<boolean>(PUBLIC, handlerTarget) : false;
     }
 
-    return async (
-      { context }: ResolverData<GraphqlCtx>,
-      roles: (string | string[])[] = []
-    ) => {
+    return async ({ context }: ResolverData<GraphqlCtx>, roles: (string | string[])[] = []) => {
       const isPublic = getIsPublic(context);
       if (isPublic) return true;
-      const keycloakService = new KeycloakService(
-        options,
-        keycloak,
-        httpService,
-        context
-      );
+      const keycloakService = new KeycloakService(options, keycloak, httpService, context);
       const username = (await keycloakService.getUserInfo())?.preferredUsername;
       if (!username) return false;
       const resource = getResource(context);
       logger.verbose(
-        `resource${
-          resource ? ` '${resource}'` : ""
-        } for '${username}' requires ${
-          roles.length ? `roles [ ${roles.join(" | ")} ]` : "authentication"
-        }`
+        `resource${resource ? ` '${resource}'` : ''} for '${username}' requires ${
+          roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
+        }`,
       );
       if (await keycloakService.isAuthorizedByRoles(roles)) {
         logger.verbose(`authorization for '${username}' granted`);

@@ -1,5 +1,5 @@
-describe("nestjs-keycloak-typegraphql", () => {
-  it("should work", async () => {
+describe('nestjs-keycloak-typegraphql', () => {
+  it('should work', async () => {
     expect(true).toBe(true);
   });
 });

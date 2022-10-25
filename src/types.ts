@@ -1,13 +1,13 @@
 /**
  * File: /src/types.ts
- * Project: nestjs-keycloak-typegraphql
- * File Created: 17-07-2021 19:16:13
- * Author: Clay Risser <clayrisser@gmail.com>
+ * Project: @risserlabs/nestjs-keycloak-typegraphql
+ * File Created: 24-10-2022 09:51:36
+ * Author: Clay Risser
  * -----
- * Last Modified: 06-05-2022 05:34:19
- * Modified By: Clay Risser <clayrisser@gmail.com>
+ * Last Modified: 25-10-2022 14:23:18
+ * Modified By: Clay Risser
  * -----
- * Clay Risser (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,20 +22,16 @@
  * limitations under the License.
  */
 
-import Token from "keycloak-connect/middleware/auth-utils/token";
-import { ApiProperty } from "@nestjs/swagger";
-import { KeycloakContext } from "keycloak-connect-graphql";
-import { KeycloakService, KeycloakRequest } from "@risserlabs/nestjs-keycloak";
-import { ModuleMetadata } from "@nestjs/common/interfaces";
-import { RequiredActionAlias } from "@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation";
-import {
-  Field,
-  MiddlewareFn,
-  ObjectType,
-  registerEnumType,
-} from "type-graphql";
-import { Request } from "express";
-import { Type } from "@nestjs/common";
+import Token from 'keycloak-connect/middleware/auth-utils/token';
+import { ApiProperty } from '@nestjs/swagger';
+import type { KeycloakContext } from 'keycloak-connect-graphql';
+import type { KeycloakService, KeycloakRequest } from '@risserlabs/nestjs-keycloak';
+import type { ModuleMetadata } from '@nestjs/common/interfaces';
+import { RequiredActionAlias } from '@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation';
+import type { MiddlewareFn } from 'type-graphql';
+import { Field, ObjectType, registerEnumType } from 'type-graphql';
+import type { Request } from 'express';
+import type { Type } from '@nestjs/common';
 
 export interface HashMap<T = any> {
   [key: string]: T;
@@ -43,8 +39,8 @@ export interface HashMap<T = any> {
 
 export interface TypeGraphqlMeta {
   deferredMiddlewares?: MiddlewareFn[];
-  getClass?(): Type<any>;
-  getHandler?(): Function;
+  getClass?: () => Type<any>;
+  getHandler?: () => Function;
   [key: string]: any;
 }
 
@@ -55,20 +51,17 @@ export interface GraphqlCtx extends HashMap {
   typegraphqlMeta?: TypeGraphqlMeta;
 }
 
-export interface KeycloakTypegraphqlOptions {}
+export type KeycloakTypegraphqlOptions = Record<string, unknown>;
 
-export interface KeycloakTypegraphqlAsyncOptions
-  extends Pick<ModuleMetadata, "imports"> {
+export interface KeycloakTypegraphqlAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
   inject?: any[];
-  useFactory?: (
-    ...args: any[]
-  ) => Promise<KeycloakTypegraphqlOptions> | KeycloakTypegraphqlOptions;
+  useFactory?: (...args: any[]) => Promise<KeycloakTypegraphqlOptions> | KeycloakTypegraphqlOptions;
 }
 
 export enum GqlBufferType {
-  Buffer = "Buffer",
+  Buffer = 'Buffer',
 }
-registerEnumType(GqlBufferType, { name: "GqlBufferType" });
+registerEnumType(GqlBufferType, { name: 'GqlBufferType' });
 
 @ObjectType()
 export class GqlBuffer {
@@ -226,6 +219,7 @@ export class UserInfo {
   @Field((_type) => String)
   sub!: string;
 
+  // eslint-disable-next-line no-undef
   [key: string]: any;
 }
 
@@ -459,4 +453,4 @@ export class User {
   username?: string;
 }
 
-export const KEYCLOAK_TYPEGRAPHQL_OPTIONS = "KEYCLOAK_TYPEGRAPHQL_OPTIONS";
+export const KEYCLOAK_TYPEGRAPHQL_OPTIONS = 'KEYCLOAK_TYPEGRAPHQL_OPTIONS';
