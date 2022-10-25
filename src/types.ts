@@ -4,7 +4,7 @@
  * File Created: 24-10-2022 09:51:36
  * Author: Clay Risser
  * -----
- * Last Modified: 25-10-2022 14:23:18
+ * Last Modified: 25-10-2022 15:03:13
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -27,7 +27,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import type { KeycloakContext } from 'keycloak-connect-graphql';
 import type { KeycloakService, KeycloakRequest } from '@risserlabs/nestjs-keycloak';
 import type { ModuleMetadata } from '@nestjs/common/interfaces';
-import { RequiredActionAlias } from '@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation';
+// import { RequiredActionAlias } from '@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation';
 import type { MiddlewareFn } from 'type-graphql';
 import { Field, ObjectType, registerEnumType } from 'type-graphql';
 import type { Request } from 'express';
@@ -432,9 +432,9 @@ export class User {
   @Field((_type) => [String], { nullable: true })
   realmRoles?: string[];
 
-  @ApiProperty()
-  @Field((_type) => [RequiredActionAlias], { nullable: true })
-  requiredActions?: RequiredActionAlias[];
+  // @ApiProperty()
+  // @Field((_type) => [RequiredActionAlias], { nullable: true })
+  // requiredActions?: RequiredActionAlias[];
 
   @ApiProperty()
   @Field((_type) => String, { nullable: true })
