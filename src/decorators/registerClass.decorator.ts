@@ -4,7 +4,7 @@
  * File Created: 24-10-2022 09:51:36
  * Author: Clay Risser
  * -----
- * Last Modified: 25-10-2022 14:16:23
+ * Last Modified: 06-11-2022 03:23:04
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -23,8 +23,8 @@
  */
 
 import type { ResolverData, NextFn } from 'type-graphql';
+import { DecorateAll } from '@risserlabs/typegraphql-nestjs';
 import { createMethodDecorator } from 'type-graphql';
-import DecorateAll from './decorateAll.decorator';
 import type { GraphqlCtx } from '../types';
 
 export default function RegisterClass(target: any): void | Function {

@@ -4,7 +4,7 @@
  * File Created: 24-10-2022 09:51:36
  * Author: Clay Risser
  * -----
- * Last Modified: 26-10-2022 11:13:13
+ * Last Modified: 06-11-2022 03:22:48
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,11 +22,10 @@
  * limitations under the License.
  */
 
-import DecorateAll from './decorateAll.decorator';
 import Guards from './guards.decorator';
 import RegisterClass from './registerClass.decorator';
 import RegisterHandler from './registerHandler.decorator';
 import { Resolver } from './resolver.decorator';
 import { OnlyOwner } from './onlyOwner.decorator';
 
-export { DecorateAll, RegisterClass, RegisterHandler, Resolver, Guards, OnlyOwner };
+export { RegisterClass, RegisterHandler, Resolver, Guards, OnlyOwner };

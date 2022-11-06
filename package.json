@@ -1,7 +1,7 @@
 {
   "name": "@risserlabs/nestjs-keycloak-typegraphql",
   "description": "nestjs module for authenticating typegraphql with keycloak",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "sideEffects": false,
   "license": "Apache-2.0",
   "keywords": [
@@ -65,6 +65,7 @@
   "dependencies": {
     "@babel/runtime": "^7.19.4",
     "@keycloak/keycloak-admin-client": "^19.0.3",
+    "@risserlabs/typegraphql-nestjs": "^0.5.5",
     "core-js": "^3.26.0",
     "keycloak-connect": "^19.0.3",
     "keycloak-connect-graphql": "^0.7.0",
