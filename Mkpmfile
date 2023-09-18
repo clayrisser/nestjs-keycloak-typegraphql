@@ -38,7 +38,7 @@ export NPM_AUTH_TOKEN ?= $(shell $(CAT) $(HOME)/.docker/config.json 2>$(NULL) | 
 ACTIONS += deps
 $(ACTION)/deps: package.json
 	@$(YARN) install $(DEPS_ARGS)
-	@$(call done,install)
+	@$(call done,$@)
 
 ACTIONS += format~deps ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)

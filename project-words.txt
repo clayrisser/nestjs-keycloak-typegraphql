@@ -12,6 +12,7 @@ disableable
 dts
 ecma
 enum
+envcache
 esm
 format
 func
