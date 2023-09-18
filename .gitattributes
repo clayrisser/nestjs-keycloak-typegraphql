@@ -4,5 +4,4 @@ yarn.lock filter=lfs diff=lfs merge=lfs -text
 .yarn/releases/** filter=lfs diff=lfs merge=lfs -text
 .yarn/patches/** filter=lfs diff=lfs merge=lfs -text
 .yarn/plugins/** filter=lfs diff=lfs merge=lfs -text
-.mkpm/.bootstrap.mk filter=lfs diff=lfs merge=lfs -text
-.mkpm/.cache.tar.gz filter=lfs diff=lfs merge=lfs -text
+.mkpm/cache.tar.gz filter=lfs diff=lfs merge=lfs -text

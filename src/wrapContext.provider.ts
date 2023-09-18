@@ -1,25 +1,22 @@
-/**
- * File: /src/wrapContext.provider.ts
- * Project: @risserlabs/nestjs-keycloak-typegraphql
- * File Created: 24-10-2022 09:51:36
- * Author: Clay Risser
- * -----
- * Last Modified: 25-10-2022 14:23:34
- * Modified By: Clay Risser
- * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+/*
+ *  File: /src/wrapContext.provider.ts
+ *  Project: @bitspur/nestjs-keycloak-typegraphql
+ *  File Created: 18-09-2023 15:06:59
+ *  Author: Clay Risser
+ *  -----
+ *  BitSpur (c) Copyright 2021 - 2023
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
 import type { FactoryProvider } from '@nestjs/common';
@@ -28,7 +25,7 @@ import type { Keycloak } from 'keycloak-connect';
 import { KeycloakContext } from 'keycloak-connect-graphql';
 import type { KeycloakOptions } from '@risserlabs/nestjs-keycloak';
 import { KEYCLOAK, KEYCLOAK_OPTIONS, KeycloakService } from '@risserlabs/nestjs-keycloak';
-import type { GraphqlCtx, HashMap } from './types';
+import type { GraphqlCtx } from './types';
 
 export const WRAP_CONTEXT = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_WRAP_CONTEXT';
 
@@ -36,7 +33,7 @@ const WrapContextProvider: FactoryProvider<GraphqlCtx> = {
   provide: WRAP_CONTEXT,
   inject: [KEYCLOAK_OPTIONS, KEYCLOAK, HttpService],
   useFactory: (options: KeycloakOptions, keycloak: Keycloak, httpService: HttpService) => {
-    return (context: HashMap) => {
+    return (context: Record<string, any>) => {
       const graphqlContext: GraphqlCtx = context;
       graphqlContext.kauth = new KeycloakContext({ req: context.req }, keycloak);
       graphqlContext.typegraphqlMeta = {};

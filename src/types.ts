@@ -1,28 +1,24 @@
-/**
- * File: /src/types.ts
- * Project: @risserlabs/nestjs-keycloak-typegraphql
- * File Created: 24-10-2022 09:51:36
- * Author: Clay Risser
- * -----
- * Last Modified: 25-10-2022 15:03:13
- * Modified By: Clay Risser
- * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+/*
+ *  File: /src/types.ts
+ *  Project: @bitspur/nestjs-keycloak-typegraphql
+ *  File Created: 18-09-2023 15:06:59
+ *  Author: Clay Risser
+ *  -----
+ *  BitSpur (c) Copyright 2021 - 2023
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
-import Token from 'keycloak-connect/middleware/auth-utils/token';
 import { ApiProperty } from '@nestjs/swagger';
 import type { KeycloakContext } from 'keycloak-connect-graphql';
 import type { KeycloakService, KeycloakRequest } from '@risserlabs/nestjs-keycloak';
@@ -33,10 +29,6 @@ import { Field, ObjectType, registerEnumType } from 'type-graphql';
 import type { Request } from 'express';
 import type { Type } from '@nestjs/common';
 
-export interface HashMap<T = any> {
-  [key: string]: T;
-}
-
 export interface TypeGraphqlMeta {
   deferredMiddlewares?: MiddlewareFn[];
   getClass?: () => Type<any>;
@@ -44,7 +36,7 @@ export interface TypeGraphqlMeta {
   [key: string]: any;
 }
 
-export interface GraphqlCtx extends HashMap {
+export interface GraphqlCtx extends Record<string, any> {
   kauth?: KeycloakContext;
   keycloakService?: KeycloakService;
   req?: KeycloakRequest<Request>;
@@ -156,7 +148,7 @@ export class TokenContent {
 }
 
 @ObjectType()
-export class TokenProperties {
+export class Token {
   @ApiProperty()
   @Field((_type) => String)
   clientId!: string;
@@ -185,16 +177,16 @@ export class TokenProperties {
 @ObjectType()
 export class GrantProperties {
   @ApiProperty()
-  @Field((_type) => TokenProperties)
-  access_token?: TokenProperties;
+  @Field((_type) => Token)
+  access_token?: Token;
 
   @ApiProperty()
-  @Field((_type) => TokenProperties)
-  refresh_token?: TokenProperties;
+  @Field((_type) => Token)
+  refresh_token?: Token;
 
   @ApiProperty()
-  @Field((_type) => TokenProperties)
-  id_token?: TokenProperties;
+  @Field((_type) => Token)
+  id_token?: Token;
 
   @ApiProperty()
   @Field((_type) => String)
@@ -454,3 +446,33 @@ export class User {
 }
 
 export const KEYCLOAK_TYPEGRAPHQL_OPTIONS = 'KEYCLOAK_TYPEGRAPHQL_OPTIONS';
+
+export interface Token {
+  clientId: string;
+
+  content: TokenContent;
+
+  header: TokenHeader;
+
+  signature: GqlBuffer;
+
+  signed: string;
+
+  token: string;
+  isExpired: () => boolean;
+  hasRole: (roleName: string) => boolean;
+  hasApplicationRole: (appName: string, roleName: string) => boolean;
+  hasRealmRole: (roleName: string) => boolean;
+}
+
+export interface TokenContentRealmAccess {
+  roles: string[];
+  [key: string]: any;
+}
+
+interface ResourceAccessItem {
+  roles?: string[];
+  [key: string]: any;
+}
+
+export type ResourceAccess = Record<string, ResourceAccessItem>;

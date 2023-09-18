@@ -24,3 +24,8 @@ charset = utf-8
 indent_size = 4
 indent_style = tab
 trim_trailing_whitespace = false
+
+[Mkpmfile]
+charset = utf-8
+indent_size = 4
+indent_style = tab
